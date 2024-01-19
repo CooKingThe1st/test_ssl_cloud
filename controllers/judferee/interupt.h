@@ -3,7 +3,14 @@
 
 #include "Setup_UI.h"
 #include <stdlib.h>
-#include "..\omni_mobile\geometry.h"
+
+#ifdef __linux__ 
+	#include "../omni_mobile/geometry.h"
+#elif _WIN32
+	#include "..\omni_mobile\geometry.h"
+#else
+
+#endif
 
 int player_ball[ROBOTS];
 // ball variable

@@ -698,7 +698,7 @@ int main(int argc, char **argv) {
       // if (DECENTRALIZED)
 
       try{
-        if  (score[0]+ score[1] < 1)
+        if ( CURRENT_BRAIN_LEVEL != BRAIN_LEVEL_0  && (score[0]+ score[1] < 1) )
           check_interupt(missing_player, player_position, euler_cached_touch);
       } catch(...){
         printf(" CHECK INTERUP ASSERTION \n");

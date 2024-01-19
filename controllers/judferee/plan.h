@@ -9,7 +9,15 @@
 
 #include <assert.h>
 #include <filesystem>
-#include "..\omni_mobile\geometry.h"
+
+#ifdef __linux__ 
+	#include "../omni_mobile/geometry.h"
+#elif _WIN32
+	#include "..\omni_mobile\geometry.h"
+#else
+
+#endif
+
 #define ROBOTS (7*2)  // number of robots
 #define HALF_LENGTH_LEG 0.265
 #define TACKLE_DEBUG_MODE 0
@@ -65,7 +73,7 @@ void log_to_file(string record_file_name, string data)
 }
 
 void clear_file(string file_name){
-	if (!PAPER_ATTAK_MODE) return;
+if (!PAPER_ATTAK_MODE) return;
   std::ofstream ofs;
   ofs.open(file_name+".txt", std::ofstream::out | std::ofstream::trunc);
   ofs.close();
@@ -1072,7 +1080,7 @@ Command_Pack off_ball_running( bool *missing, double player_pos[][3], int *playe
 
 	int who_closest_me_now = get_closest_robot_on_team(Point{player_pos[this_id][0], player_pos[this_id][1]}, missing, player_pos, this_id);
 	// SHOULD BE brain_level here
-	if (BRAIN_LEVEL ==  1 || BRAIN_LEVEL ==  3 || BRAIN_LEVEL ==  2){
+	if (BRAIN_LEVEL ==  1 || BRAIN_LEVEL ==  3 || BRAIN_LEVEL ==  2 || BRAIN_LEVEL == 0){
 
 		if (current_situation >= 0){
 			vector<Point> possible_candidate;
@@ -1160,6 +1168,25 @@ Command_Pack switch_to_attack(unsigned int time_step_now,  bool *missing, double
 
 		double best_rec_point[ROBOTS] = {-1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000};
 
+		if (BRAIN_LEVEL == BRAIN_LEVEL_0){
+// this is just a placeholder for random pass
+
+			best_pass_reward = 100;
+			best_rec = ball_holder;
+
+			std::vector<int> possible_pass_candidate;
+			for (int i = 0; i < ROBOTS; i++)
+				if (!missing[i] && get_team(i)*get_team(ball_holder) > 0 && i != ball_holder)
+					possible_pass_candidate.push_back(i);
+
+			// best_rec = possible_pass_candidate[rand() % possible_pass_candidate.size()];
+			best_rec = possible_pass_candidate.back();
+			best_field_point = { (ball_pos[0] + 3 * player_pos[best_rec][0])/4, (ball_pos[1] + 3 * player_pos[best_rec][1])/4};
+
+			if (BALL_HOLDER_IN_STUCK || length_dist_vector(player_pos[best_rec][0], player_pos[best_rec][1], ball_pos[0], ball_pos[1]) < 5)
+				best_pass_reward = 0;
+		}
+		else
 		if (time_step_now > attack_pack.time_step){
 
 			clear_file("temp");
@@ -1171,7 +1198,7 @@ Command_Pack switch_to_attack(unsigned int time_step_now,  bool *missing, double
 
 			TackleTree me_pass_tree[ROBOTS];
 
-			std::vector< pair<double, int> > possible_pass_candidate;
+			// std::vector< pair<double, int> > possible_pass_candidate;
 
 	// brute first, but NEED TO BIAS OVER PREVIOUSLY TO AVOID BIG JUMP -> STAGGERING
 	// NEED TO CONSIDER TASK and FORFEIT TASK
@@ -1344,7 +1371,7 @@ Command_Pack switch_to_attack(unsigned int time_step_now,  bool *missing, double
 				// if (ATTACK_DEBUG_MODE && this_id == best_rec){ cout << "ATTACK MODE implicit pass RECEIVED>id " << best_rec << '\n'; }
 				return Command_Pack{this_id, 14, best_field_point.first, best_field_point.second};
 			}
-			else if (best_ball_tree.cover_plan[this_id] >= 0) {
+			else if (BRAIN_LEVEL != BRAIN_LEVEL_0 && best_ball_tree.FirstLayer != 0 && best_ball_tree.cover_plan[this_id] >= 0) {
 				int nID = best_ball_tree.cover_plan[this_id];
 				Point Sink = best_ball_tree.ListNode[nID].Sink;
 				return Command_Pack{this_id, 13, Sink.first, Sink.second}; // cover_plan default -1
@@ -1580,6 +1607,7 @@ Command_Pack normal_gameplay(unsigned int time_step_now, int brain_level, bool *
 }
 
 Command_Pack free_kick_mode(interuptPack Inting, Command_Pack normal_respond,double player_pos[][3],int *player_ball){
+
 	if (Inting.vio_type == -1) return normal_respond;
 
 	int check_ops = get_team(Inting.executor) * get_team(normal_respond.player_id);
