@@ -1,0 +1,21 @@
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+Start_of_a_Pass from 11 
+A_good_pass_to 8
+Start_of_a_Shoot from 8 
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+Start_of_a_Pass from 11 
+A_good_pass_to 8
+Start_of_a_Shoot from 8 
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+Start_of_a_Shoot from 11 
+Switch_Possesion from 11 to 1
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+Start_of_a_Shoot from 11 

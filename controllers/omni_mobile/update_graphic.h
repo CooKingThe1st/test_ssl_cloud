@@ -17,12 +17,17 @@ void update_self_marker(string DEF_PREFIX, int self_id){
   	string MARKER_GROUP = DEF_PREFIX + ".NAIYOU.BASE_MOBILE_SHAPE.MARKERS.ID";
   	string ORI_ID = MARKER_GROUP+".ID_DIR_N";
 
+  	string INDI =  DEF_PREFIX + ".INDICATOR";
+
   	string ID_SHAPE_S = MARKER_GROUP+".ID_SHAPE_S";
   	string ID_SHAPE_E = MARKER_GROUP+".ID_SHAPE_E";
   	string ID_SHAPE_W = MARKER_GROUP+".ID_SHAPE_W";
   	string ID_SHAPE_MID = MARKER_GROUP+".ID_SHAPE_MID";
 
 	wb_supervisor_node_set_visibility(wb_supervisor_node_get_from_def(ORI_ID.c_str()) , vpoint, 1);
+
+	wb_supervisor_node_set_visibility(wb_supervisor_node_get_from_def(INDI.c_str()) , vpoint, 0);
+
 
 	if (CHECK_BIT(self_id, 0)) 
 		wb_supervisor_node_set_visibility(wb_supervisor_node_get_from_def(ID_SHAPE_MID.c_str()) , vpoint, 1);

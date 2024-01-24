@@ -1,0 +1,19 @@
+GAME_START
+GAME_START
+GAME_START
+GAME_START
+Start_of_a_Pass from 1 
+A_good_pass_to 4
+Switch_Possesion from 8 to 4
+Start_of_a_Shoot from 11 
+TIME _30-11-2023-18-09-38 STEP 510
+Possesion 0.122581 0.877419
+PassAttempt 0 1 Success 0 1
+ShootAttempt 1 0
+BallAtkTime 509.000000 0.000000
+Goal 1 0
+EndOfReport
+GAME_START
+Start_of_a_Pass from 1 
+A_good_pass_to 4
+Start_of_a_Shoot from 11 

@@ -1,0 +1,118 @@
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+Switch_Possesion from 11 to 0
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+Switch_Possesion from 11 to 0
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+Start_of_a_Shoot from 11 
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+Start_of_a_Pass from 11 
+Switch_Possesion from 11 to 4
+Start_of_a_Pass from 11 
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+Start_of_a_Pass from 11 
+Switch_Possesion from 11 to 4
+Start_of_a_Pass from 4 
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+Switch_Possesion from 11 to 0
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+Start_of_a_Pass from 11 
+Switch_Possesion from 11 to 0
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 7
+Start_of_a_Pass from 7 
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+Start_of_a_Shoot from 11 
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+Switch_Possesion from 11 to 4
+Start_of_a_Pass from 0 
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+Start_of_a_Pass from 0 
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+Start_of_a_Pass from 11 
+Switch_Possesion from 11 to 4
+GAME_START
+Start_of_a_Pass from 8 
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+Start_of_a_Shoot from 11 
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+Switch_Possesion from 11 to 0
+Start_of_a_Pass from 0 
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+Start_of_a_Shoot from 11 
+Switch_Possesion from 11 to 1
+TIME _01-12-2023-15-18-48 STEP 208
+Possesion 0.705882 0.294118
+PassAttempt 1 0 Success 1 0
+ShootAttempt 1 0
+BallAtkTime 207.000000 0.000000
+Goal 1 0
+EndOfReport
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+GAME_START
+Start_of_a_Pass from 8 
+Switch_Possesion from 8 to 0
+Start_of_a_Pass from 0 
+Switch_Possesion from 0 to 11
+Start_of_a_Shoot from 11 
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+GAME_START
+Start_of_a_Pass from 8 
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+Start_of_a_Pass from 1 
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+Start_of_a_Shoot from 11 
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+Start_of_a_Shoot from 11 
+TIME _01-12-2023-15-20-48 STEP 218
+Possesion 0.987952 0.012048
+PassAttempt 1 0 Success 1 0
+ShootAttempt 1 0
+BallAtkTime 217.000000 0.000000
+Goal 1 0
+EndOfReport
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+Start_of_a_Shoot from 11 

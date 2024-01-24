@@ -1,0 +1,6 @@
+[submodule "controllers/omni_mobile"]
+	path = controllers/omni_mobile
+	url = https://github.com/CooKingThe1st/omni_mobile.git
+[submodule "controllers/judferee"]
+	path = controllers/judferee
+	url = https://github.com/CooKingThe1st/judferee.git

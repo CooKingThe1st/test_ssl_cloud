@@ -1548,7 +1548,7 @@ Command_Pack guess_ball_strategy( bool *missing, double player_pos[][3], int *pl
 
 			return Command_Pack{this_id, 68, best_IPOINT.first, best_IPOINT.second};
 		}
-		else if (tactic_tree.cover_plan[this_id] >= 0) {
+		else if (BRAIN_LEVEL != BRAIN_LEVEL_0 && tactic_tree.cover_plan[this_id] >= 0) {
 			int nID = tactic_tree.cover_plan[this_id];
 			Point Sink = tactic_tree.ListNode[nID].Sink;
 			return Command_Pack{this_id, 13, Sink.first, Sink.second}; // cover_plan default -1

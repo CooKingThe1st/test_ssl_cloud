@@ -4,14 +4,14 @@ using namespace std;
 
 #include <string.h>
 #include <cassert>  
-#define UI_ON 0
+#define UI_ON 1
 #define LAYOUT_STAT 0
 #define LAYOUT_BVIOR 1
 #define LOG_MODE 0
 
 #include <stdio.h>
 #include <iomanip>
-int CURRENT_BRAIN_LEVEL = 1;//1->Naive, 3->ADVANCED
+int CURRENT_BRAIN_LEVEL = 0;// 0-> random, 1->Naive, 3->mixed
 
 
 #define ROBOTS (7*2)  // number of robots

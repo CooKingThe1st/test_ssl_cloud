@@ -1,0 +1,281 @@
+GAME_START
+Start_of_a_Pass from 4 
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 9
+Start_of_a_Pass from 9 
+Switch_Possesion from 9 to 6
+Start_of_a_Pass from 6 
+Switch_Possesion from 6 to 9
+Start_of_a_Pass from 9 
+A_good_pass_to 13
+Start_of_a_Pass from 13 
+Switch_Possesion from 13 to 2
+Start_of_a_Shoot from 2 
+Switch_Possesion from 2 to 9
+Start_of_a_Pass from 9 
+Switch_Possesion from 9 to 4
+Switch_Possesion from 9 to 4
+Start_of_a_Pass from 4 
+A_good_pass_to 5
+Start_of_a_Pass from 5 
+A_good_pass_to 3
+Switch_Possesion from 2 to 8
+Start_of_a_Pass from 8 
+A_good_pass_to 12
+Start_of_a_Pass from 12 
+A_good_pass_to 13
+GAME_START
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 10
+Start_of_a_Pass from 10 
+A_good_pass_to 11
+Start_of_a_Pass from 11 
+GAME_START
+GAME_START
+GAME_START
+Start_of_a_Pass from 8 
+GAME_START
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 9
+Start_of_a_Pass from 9 
+A_good_pass_to 7
+Start_of_a_Pass from 7 
+A_good_pass_to 9
+Switch_Possesion from 9 to 6
+Start_of_a_Shoot from 6 
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 9
+Start_of_a_Pass from 9 
+A_good_pass_to 8
+GAME_START
+Start_of_a_Pass from 11 
+A_good_pass_to 9
+Start_of_a_Pass from 9 
+A_good_pass_to 7
+Start_of_a_Pass from 7 
+Switch_Possesion from 7 to 6
+Start_of_a_Shoot from 6 
+A_bad_shot_to 5
+Start_of_a_Shoot from 5 
+GAME_START
+Start_of_a_Pass from 11 
+A_good_pass_to 13
+Start_of_a_Pass from 13 
+A_good_pass_to 9
+Start_of_a_Pass from 9 
+Start_of_a_Pass from 11 
+A_good_pass_to 13
+Start_of_a_Pass from 13 
+A_good_pass_to 12
+Start_of_a_Pass from 12 
+Switch_Possesion from 12 to 3
+Start_of_a_Pass from 3 
+A_good_pass_to 2
+Start_of_a_Pass from 2 
+A_good_pass_to 3
+Start_of_a_Pass from 3 
+A_good_pass_to 2
+Switch_Possesion from 2 to 9
+Start_of_a_Pass from 9 
+A_good_pass_to 10
+Start_of_a_Pass from 10 
+Switch_Possesion from 10 to 2
+Start_of_a_Pass from 2 
+Switch_Possesion from 2 to 13
+Switch_Possesion from 13 to 6
+Start_of_a_Pass from 6 
+A_good_pass_to 4
+Start_of_a_Pass from 4 
+A_good_pass_to 6
+Switch_Possesion from 6 to 8
+Start_of_a_Pass from 8 
+A_good_pass_to 7
+Start_of_a_Pass from 7 
+Switch_Possesion from 7 to 3
+Start_of_a_Pass from 3 
+Switch_Possesion from 3 to 7
+Start_of_a_Pass from 13 
+Switch_Possesion from 13 to 3
+Start_of_a_Pass from 3 
+A_good_pass_to 1
+Switch_Possesion from 12 to 1
+Start_of_a_Pass from 12 
+A_good_pass_to 13
+Start_of_a_Pass from 13 
+Switch_Possesion from 13 to 5
+Start_of_a_Pass from 5 
+A_good_pass_to 2
+Switch_Possesion from 12 to 2
+Start_of_a_Pass from 2 
+Switch_Possesion from 2 to 12
+Start_of_a_Pass from 12 
+A_good_pass_to 8
+Switch_Possesion from 8 to 1
+Start_of_a_Pass from 1 
+A_good_pass_to 5
+Start_of_a_Pass from 5 
+Switch_Possesion from 5 to 8
+Start_of_a_Pass from 8 
+A_good_pass_to 11
+Start_of_a_Pass from 11 
+A_good_pass_to 13
+Start_of_a_Pass from 13 
+A_good_pass_to 11
+Start_of_a_Pass from 11 
+Switch_Possesion from 11 to 4
+TIME _07-12-2023-16-29-05 STEP 2814
+Possesion 0.630811 0.369189
+PassAttempt 19 11 Success 11 8
+ShootAttempt 0 0
+BallAtkTime 506.000000 2307.000000
+Goal 0 0
+EndOfReport
+GAME_START
+Start_of_a_Pass from 8 
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 10
+Start_of_a_Pass from 10 
+A_good_pass_to 9
+Switch_Possesion from 9 to 6
+Start_of_a_Pass from 9 
+Switch_Possesion from 9 to 5
+Start_of_a_Pass from 5 
+Switch_Possesion from 5 to 9
+Start_of_a_Pass from 9 
+A_good_pass_to 11
+Start_of_a_Pass from 11 
+A_good_pass_to 13
+Start_of_a_Pass from 13 
+A_good_pass_to 12
+Start_of_a_Pass from 12 
+Switch_Possesion from 12 to 0
+Switch_Possesion from 11 to 1
+Start_of_a_Pass from 11 
+A_good_pass_to 13
+Start_of_a_Pass from 13 
+Switch_Possesion from 13 to 0
+Switch_Possesion from 12 to 0
+Start_of_a_Pass from 0 
+TIME _07-12-2023-16-31-23 STEP 1197
+Possesion 0.915509 0.084491
+PassAttempt 8 2 Success 6 0
+ShootAttempt 0 0
+BallAtkTime 597.000000 599.000000
+Goal 1 0
+EndOfReport
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 10
+Start_of_a_Pass from 10 
+A_good_pass_to 13
+Start_of_a_Pass from 13 
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 7
+Start_of_a_Pass from 7 
+A_good_pass_to 9
+Switch_Possesion from 9 to 5
+Start_of_a_Pass from 5 
+A_good_pass_to 6
+Start_of_a_Pass from 6 
+Switch_Possesion from 6 to 11
+Start_of_a_Pass from 11 
+Switch_Possesion from 11 to 2
+Start_of_a_Pass from 2 
+A_good_pass_to 1
+Start_of_a_Pass from 1 
+Switch_Possesion from 1 to 8
+Start_of_a_Pass from 4 
+A_good_pass_to 6
+GAME_START
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 9
+Start_of_a_Pass from 9 
+Start_of_a_Pass from 9 
+A_good_pass_to 12
+Start_of_a_Pass from 12 
+Switch_Possesion from 3 to 12
+Start_of_a_Pass from 12 
+A_good_pass_to 11
+Start_of_a_Pass from 11 
+Switch_Possesion from 11 to 6
+Start_of_a_Pass from 6 
+Switch_Possesion from 6 to 8
+Switch_Possesion from 8 to 6
+Switch_Possesion from 8 to 6
+Start_of_a_Pass from 6 
+A_good_pass_to 4
+Switch_Possesion from 10 to 4
+Switch_Possesion from 10 to 6
+Switch_Possesion from 6 to 9
+Switch_Possesion from 9 to 6
+Start_of_a_Pass from 6 
+Switch_Possesion from 6 to 11
+Switch_Possesion from 7 to 4
+Switch_Possesion from 6 to 12
+Start_of_a_Pass from 12 
+Start_of_a_Pass from 12 
+Switch_Possesion from 6 to 12
+Switch_Possesion from 12 to 4
+Start_of_a_Shoot from 4 
+TIME _07-12-2023-16-35-01 STEP 1935
+Possesion 0.630662 0.369338
+PassAttempt 5 3 Success 3 1
+ShootAttempt 0 1
+BallAtkTime 374.000000 1560.000000
+Goal 0 1
+EndOfReport
+GAME_START
+GAME_START
+Start_of_a_Pass from 8 
+A_good_pass_to 9
+Start_of_a_Pass from 6 
+Switch_Possesion from 9 to 6
+Switch_Possesion from 9 to 6
+Start_of_a_Pass from 13 
+A_good_pass_to 8
+Start_of_a_Pass from 8 
+A_good_pass_to 7
+Switch_Possesion from 7 to 4
+Start_of_a_Shoot from 4 
+GAME_START
+Start_of_a_Pass from 8 
+Switch_Possesion from 8 to 6
+Start_of_a_Pass from 6 
+GAME_START
+Start_of_a_Pass from 11 
+A_good_pass_to 9
+Start_of_a_Pass from 9 
+Switch_Possesion from 9 to 4
+Start_of_a_Pass from 4 
+A_good_pass_to 6
+Start_of_a_Pass from 6 
+A_good_pass_to 4
+Switch_Possesion from 4 to 7
+Start_of_a_Shoot from 4 
+GAME_START
+Start_of_a_Pass from 8 
+Switch_Possesion from 8 to 4
+Start_of_a_Pass from 4 
+A_good_pass_to 6
+Start_of_a_Pass from 6 
+Switch_Possesion from 6 to 8
+Start_of_a_Pass from 13 
+Switch_Possesion from 13 to 5
+Start_of_a_Pass from 5 
+Switch_Possesion from 5 to 12
+Start_of_a_Pass from 12 
+A_good_pass_to 2
+Start_of_a_Pass from 2 
+A_good_pass_to 1
+Start_of_a_Pass from 1 
+Switch_Possesion from 1 to 13
+Start_of_a_Shoot from 13 
+A_bad_shot_to 11
+Start_of_a_Shoot from 11 
