@@ -3,7 +3,7 @@
 
 
 PROTO Indicator [
-  field SFVec3f translation 0 0 0.58
+  field SFVec3f translation 0 0 0.36
   field SFRotation rotation 1 0 0 3.14159
 ]
 {
@@ -13,6 +13,7 @@ PROTO Indicator [
     children [
           DEF CONE Shape {
               appearance PBRAppearance {
+                baseColor 0.929412 0.831373 0
                 baseColorMap ImageTexture {
                   url [
                     "https://raw.githubusercontent.com/CooKingThe1st/test_ssl_cloud/main/texture/indicator.png"
@@ -24,7 +25,7 @@ PROTO Indicator [
                 metalness 0
               }
             geometry Cone {
-              bottomRadius 0.13
+              bottomRadius 0.2
               height 0.2
             }
             castShadows FALSE
