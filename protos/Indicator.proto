@@ -1,0 +1,36 @@
+#VRML_SIM R2023b utf8
+# Show which is the current manually controlled Robot
+
+
+PROTO Indicator [
+  field SFVec3f translation 0 0 0.58
+  field SFRotation rotation 1 0 0 3.14159
+]
+{
+  DEF INDICATOR Pose {
+    translation IS translation
+    rotation IS rotation
+    children [
+          DEF CONE Shape {
+              appearance PBRAppearance {
+                baseColorMap ImageTexture {
+                  url [
+                    "https://raw.githubusercontent.com/CooKingThe1st/test_ssl_cloud/main/texture/indicator.png"
+                  ]
+                  repeatS FALSE
+                  repeatT FALSE
+                  filtering 1
+                }
+                metalness 0
+              }
+            geometry Cone {
+              bottomRadius 0.13
+              height 0.2
+            }
+            castShadows FALSE
+            isPickable FALSE
+          }
+ 
+    ]
+  }
+}
