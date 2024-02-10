@@ -2,6 +2,8 @@
 #define UI_H
 using namespace std;
 
+#include <VARIABLE.h>
+
 #include <string.h>
 #include <cassert>  
 #define UI_ON 1
@@ -11,19 +13,8 @@ using namespace std;
 
 #include <stdio.h>
 #include <iomanip>
-int CURRENT_BRAIN_LEVEL = 0;// 0-> random, 1->Naive, 3->mixed
 
 
-#define ROBOTS (7*2)  // number of robots
-
-//  player vari
-const char *robot_name[ROBOTS] = {"NON_GK", "NON_CB", "NON_LB", "NON_RB", "NON_ST", "NON_LW", "NON_RW",
-                                  "SPN_GK", "SPN_CB", "SPN_LB", "SPN_RB", "SPN_ST", "SPN_LW", "SPN_RW"};
-int map_id[12] = {-1, 0, 1, -1, 3, 2, -1, -1, -1, 4, 5, 6};
-                //   gk  cb     rb lb             st lw rw
-inline int robot_decrypt(int en_id) { return (en_id >= 500) ? map_id[en_id - 500] : (map_id[en_id] + 7); }
-
-bool missing_player[ROBOTS] = {0};
 
 std::string get_pre_set(bool X = 0){
   string pre_set;
@@ -266,5 +257,9 @@ static void show_command(int *_state, int *ball_state, double *par_main, double 
 }
 
 
+void set_visibility(){
+    WbNodeRef vpoint = wb_supervisor_node_get_from_def("VPOINT");
+    wb_supervisor_node_set_visibility(wb_supervisor_node_get_from_def("DUMMY") , vpoint, 0);
+}
 
 #endif

@@ -31,8 +31,8 @@ double ball_velo;
 #define NUMBER_OF_INFRARED_SENSORS 12
   // IR
 double sensor_values[NUMBER_OF_INFRARED_SENSORS];
-  // KEYBOARD
-int old_key = -1;
+//   // KEYBOARD
+// int old_key = -1;
   //  TRAPPED
 int bumper_value;
 //     // ROBOT DIR Value

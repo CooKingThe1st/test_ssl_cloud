@@ -6,7 +6,7 @@
 #define CHECK_BIT(var,pos) ((var) & (1<<(pos)))
 
 
-void update_self_marker(string DEF_PREFIX, int self_id){
+void update_self_marker(string DEF_PREFIX, int self_id, int self_team){
 
 	WbNodeRef vpoint = wb_supervisor_node_get_from_def("VPOINT");
 	// double default_upper[3] = {0, 0, 39};
@@ -26,7 +26,7 @@ void update_self_marker(string DEF_PREFIX, int self_id){
 
 	wb_supervisor_node_set_visibility(wb_supervisor_node_get_from_def(ORI_ID.c_str()) , vpoint, 1);
 
-	wb_supervisor_node_set_visibility(wb_supervisor_node_get_from_def(INDI.c_str()) , vpoint, 0);
+	if (self_team == 500) wb_supervisor_node_set_visibility(wb_supervisor_node_get_from_def(INDI.c_str()) , vpoint, 0);
 
 
 	if (CHECK_BIT(self_id, 0)) 

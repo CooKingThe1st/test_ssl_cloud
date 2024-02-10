@@ -21,6 +21,7 @@
 
 #include "interupt.h"
 #include "plan.h"
+#include "keyboard_event.h"
 
 #define INFO_MODE 0
 #define DECENTRALIZED 1
@@ -51,8 +52,6 @@ double player_position[ROBOTS][3], player_rotation[ROBOTS][4];
 double player_initial_position[ROBOTS][3], player_initial_rotation[ROBOTS][4];
 
 string init_ball_side = "Red_";
-
-double TIME_STEP;
 
 // referee vari
 int i, j;
@@ -653,6 +652,8 @@ int main(int argc, char **argv) {
 
   get_initial_pose();
 
+  set_visibility();
+
   little_reroll();
 
   set_scores(0, 0, 0.01, 0, 1);
@@ -667,8 +668,9 @@ int main(int argc, char **argv) {
     init_ball_side = "Blue_";
   write_to_file("FLOG_"+init_ball_side, "GAME_START\n");
 
-  while (wb_robot_step(TIME_STEP) != -1) {
+  init_keyboard();
 
+  while (wb_robot_step(TIME_STEP) != -1) {
 
       // if (ATTACK_DEBUG_MODE) cout << "       BALL_VELO NOW " << ball_velo << '\n';
 
@@ -710,6 +712,7 @@ int main(int argc, char **argv) {
 
       command_decen(time_step_counter);
 
+      check_keyboard();
       // cout << "DONE GET COMMAND\n";
 
       transmit_coach();

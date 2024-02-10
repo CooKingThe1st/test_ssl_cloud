@@ -1,6 +1,7 @@
 #ifndef PLAN_H   /* Include guard */
 #define PLAN_H
 
+#include <VARIABLE.h>
 
 //MODE, RISK FUNC
 //  THRESHOLD, REWARD FUNC
@@ -26,15 +27,6 @@
 #define STRATEGY_DEBUG_MODE 0
 #define DEBUG_FREE_BALL 0
 #define PAPER_ATTAK_MODE 0
-
-
-// SOCCER VARIABLE
-int player_state[ROBOTS];
-double player_param_main[ROBOTS] = {-1000,-1000,-1000,-1000, -1000,-1000,-1000,-1000, -1000,-1000,-1000,-1000, -1000, -1000};
-double player_param_sub[ROBOTS] = {-1000,-1000,-1000,-1000, -1000,-1000,-1000,-1000, -1000,-1000,-1000,-1000, -1000, -1000};
-
-double old_player_param_main[ROBOTS];
-int old_player_state[ROBOTS];
 
 // level
 
@@ -1179,12 +1171,16 @@ Command_Pack switch_to_attack(unsigned int time_step_now,  bool *missing, double
 				if (!missing[i] && get_team(i)*get_team(ball_holder) > 0 && i != ball_holder)
 					possible_pass_candidate.push_back(i);
 
-			// best_rec = possible_pass_candidate[rand() % possible_pass_candidate.size()];
-			best_rec = possible_pass_candidate.back();
-			best_field_point = { (ball_pos[0] + 3 * player_pos[best_rec][0])/4, (ball_pos[1] + 3 * player_pos[best_rec][1])/4};
-
-			if (BALL_HOLDER_IN_STUCK || length_dist_vector(player_pos[best_rec][0], player_pos[best_rec][1], ball_pos[0], ball_pos[1]) < 5)
+			if (BALL_HOLDER_IN_STUCK || possible_pass_candidate.size() < 1 )
 				best_pass_reward = 0;
+			else {
+				// best_rec = possible_pass_candidate[rand() % possible_pass_candidate.size()];
+				best_rec = possible_pass_candidate.back();
+				best_field_point = { (ball_pos[0] + 3 * player_pos[best_rec][0])/4, (ball_pos[1] + 3 * player_pos[best_rec][1])/4};
+
+				if (length_dist_vector(player_pos[best_rec][0], player_pos[best_rec][1], ball_pos[0], ball_pos[1]) < 5)
+					best_pass_reward = 0;
+			}
 		}
 		else
 		if (time_step_now > attack_pack.time_step){

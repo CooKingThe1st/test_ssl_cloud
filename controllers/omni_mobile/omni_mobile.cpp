@@ -322,8 +322,8 @@ void init_sensor_actuator()
     wb_distance_sensor_enable(infrared_sensors[i], TIME_STEP);
   }
   // Enable the keyboard inputs
-  old_key = 0;
-  wb_keyboard_enable(TIME_STEP);
+  // old_key = 0;
+  // wb_keyboard_enable(TIME_STEP);
 
   //wb_touch_sensor_enable(bumper_sensor, TIME_STEP);
 }
@@ -404,109 +404,109 @@ void get_player_ball_position()
 }
 
 
-static void check_keyboard() {
-  int key = wb_keyboard_get_key();
-  if ((key >= 0) && key != old_key) {
-    switch (key) {
-      case 'W':
-        printf("Go forwards\n");
-        base_forwards();
-        break;
-      case 'X':
-        printf("Go backwards\n");
-        base_backwards();
-        break;
-      case 'A':
-        printf("Strafe left\n");
-        base_strafe_left();
-        break;
-      case 'D':
-        printf("Strafe right\n");
-        base_strafe_right();
-        break;
-      case 'Q':
-        printf("Diag Hi Left\n");
-        base_set_speeds(DEMO_SPEED / 2.0,  DEMO_SPEED / 2.0, 0);
-        break;
-      case 'E':
-        printf("Diag Hi Right\n");
-        base_set_speeds(DEMO_SPEED / 2.0,  -DEMO_SPEED / 2.0, 0);
-        break;
-      case 'Z':
-        printf("Diag Low Left\n");
-        base_set_speeds(-DEMO_SPEED / 2.0,  DEMO_SPEED / 2.0, 0);
-        break;
-      case 'C':
-        printf("Diag Low Right\n");
-        base_set_speeds(-DEMO_SPEED / 2.0,  -DEMO_SPEED / 2.0, 0);
-        break;
+// static void check_keyboard() {
+//   int key = wb_keyboard_get_key();
+//   if ((key >= 0) && key != old_key) {
+//     switch (key) {
+//       case 'W':
+//         printf("Go forwards\n");
+//         base_forwards();
+//         break;
+//       case 'X':
+//         printf("Go backwards\n");
+//         base_backwards();
+//         break;
+//       case 'A':
+//         printf("Strafe left\n");
+//         base_strafe_left();
+//         break;
+//       case 'D':
+//         printf("Strafe right\n");
+//         base_strafe_right();
+//         break;
+//       case 'Q':
+//         printf("Diag Hi Left\n");
+//         base_set_speeds(DEMO_SPEED / 2.0,  DEMO_SPEED / 2.0, 0);
+//         break;
+//       case 'E':
+//         printf("Diag Hi Right\n");
+//         base_set_speeds(DEMO_SPEED / 2.0,  -DEMO_SPEED / 2.0, 0);
+//         break;
+//       case 'Z':
+//         printf("Diag Low Left\n");
+//         base_set_speeds(-DEMO_SPEED / 2.0,  DEMO_SPEED / 2.0, 0);
+//         break;
+//       case 'C':
+//         printf("Diag Low Right\n");
+//         base_set_speeds(-DEMO_SPEED / 2.0,  -DEMO_SPEED / 2.0, 0);
+//         break;
 
-      case 'I':
-        printf("Go forward and rotate\n");
-        base_set_speeds(DEMO_SPEED / 2.0,  0,3);
-        break;
-      case 'K':
-        printf("Go backwards and rotate\n");
-        base_set_speeds(-DEMO_SPEED / 2.0,  0,3);
-        break;
-      case 'J':
-        printf("Strafe Lef and rotate\n");
-        base_set_speeds(0, DEMO_SPEED / 2.0 , 3);
-        break;
-      case 'L':
-        printf("Strafe Right and rotate\n");
-        base_set_speeds(0, -DEMO_SPEED / 2.0, 3);
-        break;
-      case 'O':
-        printf("Diag Hi 45 and rotate\n");
-        base_set_speeds(DEMO_SPEED / 2.0, DEMO_SPEED / 2.0, 3);
-        break;                      
+//       case 'I':
+//         printf("Go forward and rotate\n");
+//         base_set_speeds(DEMO_SPEED / 2.0,  0,3);
+//         break;
+//       case 'K':
+//         printf("Go backwards and rotate\n");
+//         base_set_speeds(-DEMO_SPEED / 2.0,  0,3);
+//         break;
+//       case 'J':
+//         printf("Strafe Lef and rotate\n");
+//         base_set_speeds(0, DEMO_SPEED / 2.0 , 3);
+//         break;
+//       case 'L':
+//         printf("Strafe Right and rotate\n");
+//         base_set_speeds(0, -DEMO_SPEED / 2.0, 3);
+//         break;
+//       case 'O':
+//         printf("Diag Hi 45 and rotate\n");
+//         base_set_speeds(DEMO_SPEED / 2.0, DEMO_SPEED / 2.0, 3);
+//         break;                      
 
-      case 'M':
-        printf("Move to Ball\n");
-        command[ robot_decrypt(robot_encrypted_id) ] = 8;
-        break;
+//       case 'M':
+//         printf("Move to Ball\n");
+//         command[ robot_decrypt(robot_encrypted_id) ] = 8;
+//         break;
 
 
-      case '1':
-        printf("Turn left\n");
-        base_turn_left();
-        break;
-      case '3':
-        printf("Turn right\n");
-        base_turn_right();
-        break;
-      case 'P':
-        run_demo();
-        break;
-      case WB_KEYBOARD_END:
-      case 'S':
-      case ' ':
-        command[ robot_decrypt(robot_encrypted_id) ] = -1;
-        printf("Reset\n");
-        base_reset();
-        break;
-      // case 'D':
-      //   if (key != old_key)  // perform this action just once
-      //     demo = !demo;
-      //   break;
-      // case 'A':
-      //   if (key != old_key)  // perform this action just once
-      //   break;
-      default:
-        fprintf(stderr, "Wrong keyboard input\n");
-        break;
-    }
-  }
-  // if (autopilot != old_autopilot) {
-  //   old_autopilot = autopilot;
-  //   if (autopilot)
-  //     printf("Auto control\n");
-  //   else
-  //     printf("Manual control\n");
-  // }
-  old_key = key;
-}
+//       case '1':
+//         printf("Turn left\n");
+//         base_turn_left();
+//         break;
+//       case '3':
+//         printf("Turn right\n");
+//         base_turn_right();
+//         break;
+//       case 'P':
+//         run_demo();
+//         break;
+//       case WB_KEYBOARD_END:
+//       case 'S':
+//       case ' ':
+//         command[ robot_decrypt(robot_encrypted_id) ] = -1;
+//         printf("Reset\n");
+//         base_reset();
+//         break;
+//       // case 'D':
+//       //   if (key != old_key)  // perform this action just once
+//       //     demo = !demo;
+//       //   break;
+//       // case 'A':
+//       //   if (key != old_key)  // perform this action just once
+//       //   break;
+//       default:
+//         fprintf(stderr, "Wrong keyboard input\n");
+//         break;
+//     }
+//   }
+//   // if (autopilot != old_autopilot) {
+//   //   old_autopilot = autopilot;
+//   //   if (autopilot)
+//   //     printf("Auto control\n");
+//   //   else
+//   //     printf("Manual control\n");
+//   // }
+//   old_key = key;
+// }
 
 
 void emitter_publish()
@@ -626,6 +626,10 @@ static void behavior_control(){
         break;
 
 
+      case 200:
+        // base_move(param_main[this_id]);
+        base_forwards();
+        break;
 
 
         break;
@@ -665,7 +669,7 @@ int main(int argc, char **argv) {
   // display_instructions();
   passive_wait(0.1);
 
-  update_self_marker(ROBOT_PREFIX, ROBOT_ID);
+  update_self_marker(ROBOT_PREFIX, ROBOT_ID, ROBOT_TEAM);
 
   // Main loop
   //  o Autopilot mode if nothing else done
@@ -696,7 +700,7 @@ int main(int argc, char **argv) {
 
     check_counter_springer();
 
-    check_keyboard();
+    // check_keyboard();
     // component_vector[2].assign_xy( transform_vector(POD(sensor_values, &STUCKED_TIME), current_robot_dir) );
     behavior_control();
 
