@@ -781,8 +781,8 @@ void fixed_self(double delta_w, Point q_goal){
 		    // distance_query *= 1.3;
 		    // if (fabs(component_vector[0].vx) + fabs(component_vector[0].vy) + fabs(component_vector[0].vw) > 1.2) error_angle *= 3;
 		    if (SHOOT_FIXED_MODE) cout << "FIELD SHOOT AT " << x << ' ' << y << "\n",
-
-	    	fixed_self(component_vector[0].vw, Point{x, y});
+// realy here ?
+fixed_self(component_vector[0].vw, Point{x, y});
 
 		    if (fabs(component_vector[0].vw) <= error_angle ) 
 		    	shoot_ball();
@@ -825,6 +825,21 @@ void fixed_self(double delta_w, Point q_goal){
 		  }
 
 		}
+
+// 		void manual_shoot(double manual_dir_x,  double manual_dir_y, Dot bx = default_bx, Dot by = default_by)
+// 		{
+// 	    if (++ball_release_counter > 0) wb_connector_lock(magnetic_sensor);
+// 	    component_vector[0] = ball_rotate_to_position(manual_dir_x, manual_dir_y);
+
+// 	    distance_query = 100000;
+// 	    dir_shot_x = manual_dir_x - ball_position[0];
+// 	    dir_shot_y = manual_dir_y - ball_position[1];
+// 	    double error_angle = F_dynamic_error(distance_query)*0.001;
+// // error_angle = 0.001;
+// 	    if (fabs(component_vector[0].vw) <= error_angle )  shoot_ball();			    
+
+// 		}
+
 
 void force_shoot(){
     // dangerous, carefull to use
@@ -888,6 +903,59 @@ void tackle(int opp_player_id, Dot bx = default_bx, Dot by = default_by)
   //   field_vector_magnetude[2] = 0;
   //   field_vector_direction[2] = 0;
   // }
+}
+
+
+int bending_mode = 0; // 0: TBA, 1: Manual, 3: Auto-ball, 2: Auto-goal
+int counter_shoot = 0;
+
+void manual_control(int navi_command, int bend_command, int ball_command){
+	int mask_key_pressed = navi_command - 224;
+
+	if (CHECK_BIT(mask_key_pressed, 0)) component_vector[2].vy += 4;
+	if (CHECK_BIT(mask_key_pressed, 1)) component_vector[2].vy -= 4;
+	if (CHECK_BIT(mask_key_pressed, 2)) component_vector[2].vx -= 4;
+	if (CHECK_BIT(mask_key_pressed, 3)) component_vector[2].vx += 4;
+
+	if (bend_command == 1) component_vector[2].vw = degToRad(30), bending_mode = 1;
+	else if (bend_command == 2) component_vector[2].vw = degToRad(-30), bending_mode = 1;
+	else if (bend_command == 8 or (bend_command == 0 && bending_mode == 3)) 
+		component_vector[2].vw = rotate_to_position(ball_position[0], ball_position[1]).vw * (ball_possesion==0), 
+		bending_mode = 3;
+	else if (bend_command == 4 or (bend_command == 0 && bending_mode == 2)){
+		Point goal = get_goal(robot_decrypt(robot_encrypted_id), 0);
+    component_vector[2].vw = ball_rotate_to_position(goal.first, goal.second).vw;
+    bending_mode = 2;
+	}
+
+	if (ball_command == 2){
+		counter_shoot = 1; // start_counting
+	}
+	else if (ball_command == 1 && counter_shoot >= 1){		
+		counter_shoot += 1;
+	}
+	else if (ball_command == 3){
+		distance_query = 1.6*log(10*counter_shoot + 1);
+		double t_vx  = (ball_position[0] - gps_value[0]);
+		double t_vy  = (ball_position[1] - gps_value[1]);
+		double t_lxy = length_vector(t_vx, t_vy);
+
+		dir_shot_x = ball_position[0] + distance_query * t_vx/t_lxy;
+		dir_shot_y = ball_position[1] + distance_query * t_vy/t_lxy;
+
+		cout << counter_shoot << " d x y " << distance_query << ' ' << dir_shot_x << ' ' << dir_shot_y << '\n';
+
+		field_shoot(dir_shot_x, dir_shot_y);
+		shoot_ball();
+
+		counter_shoot = 0;
+	}
+	else counter_shoot = 0;
+
+	// if (ball_command == 2){
+	// 	goal_shoot(0, 0);
+	// }
+
 }
 
 #endif

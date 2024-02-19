@@ -1,6 +1,7 @@
 #ifndef INTER_H
 #define INTER_H
 
+#include "VARIABLE.h"
 #include "Setup_UI.h"
 #include <stdlib.h>
 
@@ -12,24 +13,6 @@
 
 #endif
 
-int player_ball[ROBOTS];
-// ball variable
-int non_last_ball = -1, spn_last_ball = -1;
-int player_last_touch = -1, cached_player_last_touch = -1;
-bool ball_check_hold = 1;
-
-
-//  ball and robot pose
-WbNodeRef ball_node;
-WbNodeRef goal_node[2];
-double ball_reset_timer = 0;
-double ball_velo = 0;
-double ball_position[3] = {0, 0, 0.2};
-double old_ball_position[3] = {0, 0, 0.2}; 
-double ball_moving_direction[2] = {0, 0};
- 
-double ball_initial_position[3] = {0, 0, 0.2};
-double goal_position_x[2][3] = {0}, goal_position_y[2][3] = {0}; 
 
 //-------------USEFUL-FUNCTION-----------
 double GOAL_X_LIMIT = 1000;

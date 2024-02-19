@@ -13,11 +13,6 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
-#include <webots/display.h>
-#include <webots/emitter.h>
-#include <webots/receiver.h>
-#include <webots/robot.h>
-#include <webots/supervisor.h>
 
 #include "interupt.h"
 #include "plan.h"
@@ -80,6 +75,9 @@ void init_robot()
 
   goal_node[0] = wb_supervisor_node_get_from_def("BLUE_GOAL");
   goal_node[1] = wb_supervisor_node_get_from_def("RED_GOAL");
+
+  vpoint = wb_supervisor_node_get_from_def("VPOINT");
+
 }
 
 void init_sensor_actuator()
@@ -353,7 +351,7 @@ void transmit_coach()
     vector<int> changed;
     for (i = 0; i < 7; i++){
       if (missing_player[i]) continue;
-      if (player_state[i] != old_player_state[i] or player_param_main[i] != old_player_param_main[i]) changed.push_back(i);
+      if ((player_state[i] != old_player_state[i]) or (player_param_main[i] != old_player_param_main[i]) or (player_param_sub[i] != old_player_param_sub[i])) changed.push_back(i);
     }
     float data_send[changed.size() * 4] = {0};
     for (i = 0; i < int(changed.size()); i++){
@@ -374,7 +372,7 @@ void transmit_coach()
     changed = vector<int>();
     for (i = 7; i < ROBOTS; i++){
       if (missing_player[i]) continue;
-      if (player_state[i] != old_player_state[i] or player_param_main[i] != old_player_param_main[i]) changed.push_back(i);
+      if ((player_state[i] != old_player_state[i]) or (player_param_main[i] != old_player_param_main[i]) or (player_param_sub[i] != old_player_param_sub[i])) changed.push_back(i);
     }
     float _data_send[changed.size() * 4] = {0};
     for (i = 0; i < int(changed.size()); i++){
@@ -393,6 +391,7 @@ void transmit_coach()
 
     for (i = 0; i < ROBOTS; i++)
       old_player_param_main[i] = player_param_main[i],
+      old_player_param_sub[i] = player_param_sub[i],
       old_player_state[i] = player_state[i];
 }
 
@@ -548,8 +547,6 @@ void update_current_time()
     show_current_time(match_time);
 }
 
-unsigned int time_step_counter = 1;
-
 void restart_all()
 {
   string Header = std::string("TIME ") + get_file_timestamp() + " STEP " + std::to_string(time_step_counter) + "\n";
@@ -621,17 +618,6 @@ void little_reroll(){
   } 
 }
 
-void fix_viewpoint(){
-  WbNodeRef vpoint = wb_supervisor_node_get_from_def("VPOINT");
-  double default_upper[3] = {0, 0, 39};
-  double default_top_view[4] = {-0.57735, 0.57735, 0.57735, 2.09432};
-
-  // wb_supervisor_node_move_viewpoint(wb_supervisor_node_get_from_def("SOCCER_FIELD"));
-
-  wb_supervisor_field_set_sf_rotation(wb_supervisor_node_get_field(vpoint, "orientation"), default_top_view);
-  wb_supervisor_field_set_sf_vec3f(wb_supervisor_node_get_field(vpoint, "position"), default_upper);
-
-}
 
 int main(int argc, char **argv) {
 
@@ -640,9 +626,9 @@ int main(int argc, char **argv) {
 
   wb_robot_init();
 
-  fix_viewpoint();
-
   init_robot();
+
+  fix_viewpoint();
 
   init_player_ball_position();
 
@@ -715,6 +701,7 @@ int main(int argc, char **argv) {
       check_keyboard();
       // cout << "DONE GET COMMAND\n";
 
+      
       transmit_coach();
       show_command(player_state, player_ball, player_param_main, player_param_sub);
 

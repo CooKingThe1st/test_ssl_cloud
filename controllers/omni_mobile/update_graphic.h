@@ -3,12 +3,12 @@
 #include <cassert>
 #include <webots/supervisor.h>
 
-#define CHECK_BIT(var,pos) ((var) & (1<<(pos)))
-
+WbNodeRef vpoint;
+string INDI;
 
 void update_self_marker(string DEF_PREFIX, int self_id, int self_team){
 
-	WbNodeRef vpoint = wb_supervisor_node_get_from_def("VPOINT");
+	vpoint = wb_supervisor_node_get_from_def("VPOINT");
 	// double default_upper[3] = {0, 0, 39};
 	// wb_supervisor_field_set_sf_vec3f(wb_supervisor_node_get_field(vpoint, "position"), default_upper);
 	// wb_supervisor_node_move_viewpoint(wb_supervisor_node_get_from_def("SOCCER_FIELD"));
@@ -17,7 +17,7 @@ void update_self_marker(string DEF_PREFIX, int self_id, int self_team){
   	string MARKER_GROUP = DEF_PREFIX + ".NAIYOU.BASE_MOBILE_SHAPE.MARKERS.ID";
   	string ORI_ID = MARKER_GROUP+".ID_DIR_N";
 
-  	string INDI =  DEF_PREFIX + ".INDICATOR";
+  	INDI =  DEF_PREFIX + ".INDICATOR";
 
   	string ID_SHAPE_S = MARKER_GROUP+".ID_SHAPE_S";
   	string ID_SHAPE_E = MARKER_GROUP+".ID_SHAPE_E";

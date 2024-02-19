@@ -3,56 +3,23 @@
 
 
 PROTO Indicator [
-  field SFVec3f coneXYZ 0 0 0.36
-  field SFRotation rotation 1 0 0 3.14159
-  field SFVec3f circleXYZ 0 0 0.3
 ]
 {
-  DEF INDICATOR Pose {
-    translation IS coneXYZ
-    rotation IS rotation
-    children [
-
-
-          DEF INDI Pose {
-            translation IS circleXYZ
-            children [
-              Shape {
-                appearance PBRAppearance {
-                  baseColor 0.45098 0.823529 0.0862745
-                  transparency 0.048
-                  metalness 0
-                }
-                geometry Cylinder {
-                  height 0.1
-                  radius 0.4
-                }
-              }
-            ]
+    DEF INDICATOR Pose {
+      translation 0 0 0.14
+      rotation 1 0 0 3.14159
+      children [
+        DEF COVER Shape {
+          appearance PBRAppearance {
+            baseColor 0.768627 0.627451 0
+            roughness 1
+            metalness 0
           }
-
-
-          DEF CATOR Shape {
-            appearance PBRAppearance {
-              baseColorMap ImageTexture {
-                url [
-                  "https://raw.githubusercontent.com/CooKingThe1st/test_ssl_cloud/main/texture/indicator.png"
-                ]
-                repeatS FALSE
-                repeatT FALSE
-                filtering 1
-              }
-              transparency 0.7
-              metalness 0
-            }
-            geometry Cone {
-              bottomRadius 0.15
-              height 0.25
-            }
-            castShadows FALSE
-            isPickable FALSE
+          geometry Cylinder {
+            height 0.006
+            radius 0.19
           }
- 
-    ]
-  }
+        }
+      ]
+    }
 }

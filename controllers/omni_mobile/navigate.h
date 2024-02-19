@@ -12,6 +12,10 @@
 #include <stdlib.h>
 #include "geometry.h"
 
+//-----PRE-SET
+#define NAVI_MAX_METHOD 1
+#define NAVI_NORM_METHOD 0
+
 //-------------USEFUL-FUNCTION-----------
 
 #define FIELD_VECTOR_DEBUG_MODE 0
@@ -72,6 +76,7 @@ void base_set_speeds(double vx, double vy, double omega) {
 }
 
 void base_reset() {
+  // cout << "I reset \n";
   component_vector[0] = {0, 0, 0};
   component_vector[1] = {0, 0, 0};
   component_vector[2] = {0, 0, 0};
@@ -140,12 +145,12 @@ void base_apply_speeds(double vx, double vy, double omega) {
   // vy = vy * K_velo * loss_angle_velo( omega ) / WHEEL_RADIUS;
   // omega = F_angle( omega ) * DISTANCE_WHEEL_TO_ROBOT_CENTRE / WHEEL_RADIUS;
 
-  // cout << "               APPLIED VELO " << vx << ' ' << vy << ' ' << omega << '\n';
-
   vx /= WHEEL_RADIUS;
   vy /= WHEEL_RADIUS;
   omega = F_angle(omega) * DISTANCE_WHEEL_TO_ROBOT_CENTRE / WHEEL_RADIUS;
   // omega = omega * DISTANCE_WHEEL_TO_ROBOT_CENTRE * K_angle/ WHEEL_RADIUS;
+
+  // cout << "               APPLIED VELO " << vx << ' ' << vy << ' ' << omega << '\n';
 
   check_speed(vx, Vmax); check_speed(vy, Vmax); check_speed(omega, Wmax);
 
@@ -229,37 +234,60 @@ void finalize_speed(){
     //   cout << "COMPONENT VEC " << i << " speed xyw " << component_vector[i].vx << " " << component_vector[i].vy << " " << component_vector[i].vw << '\n';
     // }
     
-  double temp_sum_w = 0; 
+  // double temp_sum_w = 0; 
   auto temp_sum_2D = make_pair(0, 0);
+  targetSpeed[2] = 0;
   for (int i = 0; i < NUM_COMPO_VEC; i++){
     temp_sum_2D.first  += component_vector[i].vx;
     temp_sum_2D.second += component_vector[i].vy;
-    temp_sum_w         += component_vector[i].vw;
+    targetSpeed[2]     += component_vector[i].vw;
   }
 
-  if (length_vector(temp_sum_2D.first, temp_sum_2D.second) >= Vmax) normalize_2D();
-  if (fabs(temp_sum_w) >= Wmax) normalize_W();
+  if (NAVI_NORM_METHOD){
+    if (fabs(targetSpeed[2]) >= Wmax)        normalize_W();
+    if (length_vector(temp_sum_2D.first, temp_sum_2D.second) >= Vmax)         normalize_2D();
 
-  targetSpeed[0] = 0; targetSpeed[1] = 0; targetSpeed[2] = 0;
-  for (int i = 0; i < NUM_COMPO_VEC; i++){
-    targetSpeed[0]  += component_vector[i].vx;
-    targetSpeed[1]  += component_vector[i].vy;
-    targetSpeed[2]  += component_vector[i].vw;
+    targetSpeed[0] = 0; targetSpeed[1] = 0; targetSpeed[2] = 0;
+    for (int i = 0; i < NUM_COMPO_VEC; i++){
+      targetSpeed[0]  += component_vector[i].vx;
+      targetSpeed[1]  += component_vector[i].vy;
+      targetSpeed[2]  += component_vector[i].vw;
+    }
+
+  }
+  else if (NAVI_MAX_METHOD){
+     targetSpeed[2] = bound_x(targetSpeed[2], -Wmax, Wmax);
+
+    if (length_vector(temp_sum_2D.first, temp_sum_2D.second) >= Vmax)
+    {
+      double temp_len = length_vector(temp_sum_2D.first, temp_sum_2D.second);
+      targetSpeed[0] = Vmax * temp_sum_2D.first / temp_len;
+      targetSpeed[1] = Vmax * temp_sum_2D.second / temp_len;
+    }
+    else
+      targetSpeed[0] = temp_sum_2D.first,
+      targetSpeed[1] = temp_sum_2D.second;
   }
 
 
-  double t_x = targetSpeed[0], t_y = targetSpeed[1], t_a = atan2(t_y, t_x);
-  targetSpeed[0] = 2 * cos(t_a);
-  targetSpeed[1] = 2 * sin(t_a);
+  // targetSpeed[0] = 0; targetSpeed[1] = 0; targetSpeed[2] = 0;
+  // for (int i = 0; i < NUM_COMPO_VEC; i++){
+  //   targetSpeed[0]  += component_vector[i].vx;
+  //   targetSpeed[1]  += component_vector[i].vy;
+  //   targetSpeed[2]  += component_vector[i].vw;
+  // }
+  // double t_x = targetSpeed[0], t_y = targetSpeed[1], t_a = atan2(t_y, t_x);
+  // targetSpeed[0] = 2 * cos(t_a);
+  // targetSpeed[1] = 2 * sin(t_a);
 
+  // cout << " ROBOT " << targetSpeed[0] << ' ' << targetSpeed[1] << ' ' << targetSpeed[2] << '\n';
 //     for (int i = 0; i < NUM_COMPO_VEC; i++)
 //       cout << "AFTER NORMALIZE VEC " << i << " speed xyw " << component_vector[i].vx << " " << component_vector[i].vy << " " << component_vector[i].vw << '\n';
 // cout << "GOUKEI " << targetSpeed[0] << ' ' << targetSpeed[1] << ' ' << targetSpeed[2] << '\n';
   // if (FIELD_VECTOR_DEBUG_MODE){
-
-    
   // }
-  if (!keyboard_control)
+
+  // if (!keyboard_control)
     for (int i = 0; i < NUM_COMPO_VEC; i++) component_vector[i] = {0, 0, 0};
 
 }

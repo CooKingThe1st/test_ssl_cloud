@@ -7,6 +7,8 @@
 #define degToRad(angleInDegrees) ((angleInDegrees) * M_PI / 180.0)
 #define radToDeg(angleInRadians) ((angleInRadians) * 180.0 / M_PI)
 
+#define CHECK_BIT(var,pos) ((var) & (1<<(pos)))
+
 #define DEBUG_POD_MODE 0
 #define SMALL_ENOUGH 0.00001
 

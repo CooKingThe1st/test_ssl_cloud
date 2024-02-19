@@ -258,8 +258,20 @@ static void show_command(int *_state, int *ball_state, double *par_main, double 
 
 
 void set_visibility(){
-    WbNodeRef vpoint = wb_supervisor_node_get_from_def("VPOINT");
+    // WbNodeRef vpoint = wb_supervisor_node_get_from_def("VPOINT");
     wb_supervisor_node_set_visibility(wb_supervisor_node_get_from_def("DUMMY") , vpoint, 0);
+}
+
+
+void fix_viewpoint(){
+  // WbNodeRef vpoint = wb_supervisor_node_get_from_def("VPOINT");
+  double default_upper[3] = {0, 0, 30}; // 0, 0, 39
+  double default_top_view[4] = {-0.57735, 0.57735, 0.57735, 2.09432};
+
+  // wb_supervisor_node_move_viewpoint(wb_supervisor_node_get_from_def("SOCCER_FIELD"));
+
+  wb_supervisor_field_set_sf_rotation(wb_supervisor_node_get_field(vpoint, "orientation"), default_top_view);
+  wb_supervisor_field_set_sf_vec3f(wb_supervisor_node_get_field(vpoint, "position"), default_upper);
 }
 
 #endif

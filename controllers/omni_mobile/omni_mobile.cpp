@@ -556,6 +556,8 @@ static void behavior_control(){
       BALL_OBS_ON = 1;
     }
     int this_id = robot_decrypt(robot_encrypted_id);
+
+    if (ROBOT_TEAM == 500) wb_supervisor_node_set_visibility(wb_supervisor_node_get_from_def(INDI.c_str()) , vpoint, 0);
     switch(current_state) {
       case 0:
         idle();
@@ -626,15 +628,31 @@ static void behavior_control(){
         break;
 
 
-      case 200:
+      case 224:
+      case 225:
+      case 226:
+      case 227:
+      case 228:
+      case 229:
+      case 230:
+      case 231:
+      case 232:
+      case 233:
+      case 234:
+      case 235:
+      case 236:
+      case 237:
+      case 238:
+      case 239:
+        wb_supervisor_node_set_visibility(wb_supervisor_node_get_from_def(INDI.c_str()) , vpoint, 1);
+        
+        manual_control(current_state, int(param_main[this_id]), int(param_sub[this_id]));
         // base_move(param_main[this_id]);
-        base_forwards();
-        break;
-
 
         break;
+
       default:
-        ;
+        cout << "unknown command " << current_state << '\n';
     }
 }
 
