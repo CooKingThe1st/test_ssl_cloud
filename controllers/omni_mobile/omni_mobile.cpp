@@ -295,8 +295,8 @@ void init_sensor_actuator()
   WbFieldRef tol_field = wb_supervisor_node_get_field(magnetic_node, "distanceTolerance");
 
 
-  wb_supervisor_field_set_sf_float(tens_field, -1);
-  wb_supervisor_field_set_sf_float(sher_field, -1);
+  wb_supervisor_field_set_sf_float(tens_field, 325);
+  wb_supervisor_field_set_sf_float(sher_field, 325);
   wb_supervisor_field_set_sf_float(tol_field, 0.05);
   double connector_pose[3] = {0, 0.24, 0.06};
   wb_supervisor_field_set_sf_vec3f(wb_supervisor_node_get_field(magnetic_node, "translation"), connector_pose);
