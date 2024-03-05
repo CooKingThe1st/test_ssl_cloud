@@ -10,7 +10,7 @@
 
 // SYSTEM VAR
 #define ROBOTS (7*2)  // number of robots
-int CURRENT_BRAIN_LEVEL = 0;// 0-> random, 1->Naive, 3->mixed
+int CURRENT_BRAIN_LEVEL = 3;// 0-> random, 1->Naive, 3->mixed
 double TIME_STEP;
 unsigned int time_step_counter = 1;
 
@@ -38,7 +38,10 @@ double ball_initial_position[3] = {0, 0, 0.2};
 double goal_position_x[2][3] = {0}, goal_position_y[2][3] = {0}; 
 
 // PLAYER VAR
-
+WbNodeRef player_def[ROBOTS];
+WbNodeRef NAN_DEF;
+double player_position[ROBOTS][3], player_rotation[ROBOTS][4];
+double player_initial_position[ROBOTS][3], player_initial_rotation[ROBOTS][4];
 
 const char *robot_name[ROBOTS] = {"NON_GK", "NON_CB", "NON_LB", "NON_RB", "NON_ST", "NON_LW", "NON_RW",
                                   "SPN_GK", "SPN_CB", "SPN_LB", "SPN_RB", "SPN_ST", "SPN_LW", "SPN_RW"};

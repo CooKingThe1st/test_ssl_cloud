@@ -919,13 +919,29 @@ void manual_control(int navi_command, int bend_command, int ball_command){
 
 	if (bend_command == 1) component_vector[2].vw = degToRad(30), bending_mode = 1;
 	else if (bend_command == 2) component_vector[2].vw = degToRad(-30), bending_mode = 1;
-	else if (bend_command == 8 or (bend_command == 0 && bending_mode == 3)) 
-		component_vector[2].vw = rotate_to_position(ball_position[0], ball_position[1]).vw * (ball_possesion==0), 
-		bending_mode = 3;
+	else if (bend_command == 8 or (bend_command == 0 && bending_mode == 3)){
+
+    bending_mode = 3;
+    if (ball_possesion == 0) {
+      if (mask_key_pressed == 0){
+        component_vector[2] = plan_rrt(Dot(ball_position[0], ball_position[1]), default_bx, default_by, 1, -0.2);
+        component_vector[2].ippai(5);
+      }
+      else {
+        component_vector[2].vw = rotate_to_position(ball_position[0], ball_position[1]).vw * (ball_possesion==0); 
+      }
+    }
+    else{
+      wb_connector_lock(magnetic_sensor);
+      // Point goal = get_goal(robot_decrypt(robot_encrypted_id), 0);
+      // component_vector[2].vw = ball_rotate_to_position(goal.first, goal.second).vw;
+		  // component_vector[2].vw = rotate_to_position(ball_position[0], ball_position[1]).vw * (ball_possesion==0);
+    }
+  }
 	else if (bend_command == 4 or (bend_command == 0 && bending_mode == 2)){
-		Point goal = get_goal(robot_decrypt(robot_encrypted_id), 0);
-    component_vector[2].vw = ball_rotate_to_position(goal.first, goal.second).vw;
     bending_mode = 2;
+
+    // still blank
 	}
 
 	if (ball_command == 2){
@@ -935,7 +951,7 @@ void manual_control(int navi_command, int bend_command, int ball_command){
 		counter_shoot += 1;
 	}
 	else if (ball_command == 3){
-		distance_query = 1.6*log(10*counter_shoot + 1);
+		distance_query = MAX(2, 1.6*log(10*counter_shoot + 1));
 		double t_vx  = (ball_position[0] - gps_value[0]);
 		double t_vy  = (ball_position[1] - gps_value[1]);
 		double t_lxy = length_vector(t_vx, t_vy);

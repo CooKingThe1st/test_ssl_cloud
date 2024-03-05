@@ -557,7 +557,7 @@ static void behavior_control(){
     }
     int this_id = robot_decrypt(robot_encrypted_id);
 
-    if (ROBOT_TEAM == 500) wb_supervisor_node_set_visibility(wb_supervisor_node_get_from_def(INDI.c_str()) , vpoint, 0);
+    // if (ROBOT_TEAM == 500) wb_supervisor_node_set_visibility(wb_supervisor_node_get_from_def(INDI.c_str()) , vpoint, 0);
     switch(current_state) {
       case 0:
         idle();
@@ -644,7 +644,7 @@ static void behavior_control(){
       case 237:
       case 238:
       case 239:
-        wb_supervisor_node_set_visibility(wb_supervisor_node_get_from_def(INDI.c_str()) , vpoint, 1);
+        // wb_supervisor_node_set_visibility(wb_supervisor_node_get_from_def(INDI.c_str()) , vpoint, 1);
         
         manual_control(current_state, int(param_main[this_id]), int(param_sub[this_id]));
         // base_move(param_main[this_id]);

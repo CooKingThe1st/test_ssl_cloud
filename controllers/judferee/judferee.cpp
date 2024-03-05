@@ -18,6 +18,8 @@
 #include "plan.h"
 #include "keyboard_event.h"
 
+#define MANUAL_MODE 1
+
 #define INFO_MODE 0
 #define DECENTRALIZED 1
 #define DEBUG_MODE 0
@@ -27,7 +29,7 @@
 #define WIRELESS_INTERUPT_MODE 0
 #define PAPER_STAT_MODE 0
 #define HANI_CHECK_MODE 1
-#define RANDOM_MODE 0
+#define RANDOM_MODE 1
 #define RANDOM_FILTER 0
 
 #define SPECIAL_INPUT_DEBUG 0
@@ -40,11 +42,6 @@
 
 using namespace std;
 
-
-WbNodeRef player_def[ROBOTS];
-WbNodeRef NAN_DEF;
-double player_position[ROBOTS][3], player_rotation[ROBOTS][4];
-double player_initial_position[ROBOTS][3], player_initial_rotation[ROBOTS][4];
 
 string init_ball_side = "Red_";
 
@@ -618,6 +615,17 @@ void little_reroll(){
   } 
 }
 
+void process_sysvar(int argc, char **argv){
+  // cout << argc << '\n';
+  // for (int i = 1; i < argc; i++)
+  //   std::cout << "argv[" << i << "]=" << argv[i] << std::endl; 
+  string temp = string(argv[1]);
+  std::size_t found_level = temp.find("AI_LEVEL");
+  if (found_level != std::string::npos)
+    // std::cout << "first 'AI' found at: " << temp.substr(found_level) << '\n';
+    CURRENT_BRAIN_LEVEL = temp.back() - '0';
+
+}
 
 int main(int argc, char **argv) {
 
@@ -625,6 +633,8 @@ int main(int argc, char **argv) {
   rid = rand() % GRIDIFY_FIELD;
 
   wb_robot_init();
+
+  process_sysvar(argc, argv);
 
   init_robot();
 
@@ -654,7 +664,7 @@ int main(int argc, char **argv) {
     init_ball_side = "Blue_";
   write_to_file("FLOG_"+init_ball_side, "GAME_START\n");
 
-  init_keyboard();
+  if (MANUAL_MODE) init_keyboard();
 
   while (wb_robot_step(TIME_STEP) != -1) {
 
@@ -698,7 +708,7 @@ int main(int argc, char **argv) {
 
       command_decen(time_step_counter);
 
-      check_keyboard();
+      if (MANUAL_MODE) check_keyboard();
       // cout << "DONE GET COMMAND\n";
 
       

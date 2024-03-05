@@ -26,7 +26,7 @@ void update_self_marker(string DEF_PREFIX, int self_id, int self_team){
 
 	wb_supervisor_node_set_visibility(wb_supervisor_node_get_from_def(ORI_ID.c_str()) , vpoint, 1);
 
-	if (self_team == 500) wb_supervisor_node_set_visibility(wb_supervisor_node_get_from_def(INDI.c_str()) , vpoint, 0);
+	// if (self_team == 500) wb_supervisor_node_set_visibility(wb_supervisor_node_get_from_def(INDI.c_str()) , vpoint, 0);
 
 
 	if (CHECK_BIT(self_id, 0)) 
