@@ -14,7 +14,6 @@ WbNodeRef CAMERA_CENTER_NODE;
 static void init_keyboard(){
   old_key = 0;
 
-  wb_keyboard_enable(TIME_STEP);
   for (int i = 0; i < 7; i++)
     if (!missing_player[i]){
       manual_player = i;
@@ -138,20 +137,24 @@ static void check_keyboard() {
   if (FOLLOW_CENTER) update_camera_center();
   else if (FOLLOW_VIEWPOINT) update_viewpoint();
 
-  vector <int> pressed_key;
+  vector <int> manual_control_key;
+  chrono_control_key[0] = false;
+  chrono_control_key[1] = false; // = pressed key [F, G]
+
   while (true){
     int key = wb_keyboard_get_key();
     if (key == -1) break;
     else 
-      pressed_key.push_back(key);
+    if (key == 'F')
+      chrono_control_key[0] = true;
+    else if (key == 'G')
+      chrono_control_key[1] = true;
+    else
+      manual_control_key.push_back(key);
       // cout << " pressed " << key << '\n';
   }
 
-  // if (pressed_key.size() == 0){
-  //   player_state[manual_player] = 0;
-  //   last_pressed_keyboard = 0;
-  //   return;
-  // }
+  if (!MANUAL_MODE) return;
 
   int manual_state = 224;
   double manual_main_param = 0000;
@@ -159,7 +162,7 @@ static void check_keyboard() {
 
   bool change_player_sign = 0, exist_space = 0;
 
-  for (auto key : pressed_key)
+  for (auto key : manual_control_key)
   {
     check_navi(key, manual_state);
     check_bend(key, manual_main_param);

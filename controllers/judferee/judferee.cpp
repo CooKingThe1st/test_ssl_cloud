@@ -16,9 +16,9 @@
 
 #include "interupt.h"
 #include "plan.h"
+#include "chrono.h"
 #include "keyboard_event.h"
 
-#define MANUAL_MODE 1
 
 #define INFO_MODE 0
 #define DECENTRALIZED 1
@@ -29,7 +29,6 @@
 #define WIRELESS_INTERUPT_MODE 0
 #define PAPER_STAT_MODE 0
 #define HANI_CHECK_MODE 1
-#define RANDOM_MODE 1
 #define RANDOM_FILTER 0
 
 #define SPECIAL_INPUT_DEBUG 0
@@ -90,6 +89,8 @@ void init_sensor_actuator()
   wb_receiver_enable(spn_receiver, TIME_STEP);
   wb_receiver_enable(non_receiver, TIME_STEP);
   // wb_receiver_enable(inter_receiver, TIME_STEP);
+
+  wb_keyboard_enable(TIME_STEP);
 
 }
 
@@ -619,12 +620,25 @@ void process_sysvar(int argc, char **argv){
   // cout << argc << '\n';
   // for (int i = 1; i < argc; i++)
   //   std::cout << "argv[" << i << "]=" << argv[i] << std::endl; 
+
   string temp = string(argv[1]);
   std::size_t found_level = temp.find("AI_LEVEL");
   if (found_level != std::string::npos)
     // std::cout << "first 'AI' found at: " << temp.substr(found_level) << '\n';
     CURRENT_BRAIN_LEVEL = temp.back() - '0';
 
+
+  temp = string(argv[2]);
+  found_level = temp.find("RAND");
+  if (found_level != std::string::npos)
+    // std::cout << "first 'AI' found at: " << temp.substr(found_level) << '\n';
+    RANDOM_MODE =  ((temp.back() - '0') > 0) ? 1 : 0;
+
+  temp = string(argv[3]);
+  found_level = temp.find("MANUAL");
+  if (found_level != std::string::npos)
+    // std::cout << "first 'AI' found at: " << temp.substr(found_level) << '\n';
+    MANUAL_MODE =  ((temp.back() - '0') > 0) ? 1 : 0;  
 }
 
 int main(int argc, char **argv) {
@@ -665,6 +679,7 @@ int main(int argc, char **argv) {
   write_to_file("FLOG_"+init_ball_side, "GAME_START\n");
 
   if (MANUAL_MODE) init_keyboard();
+  if (CHRONO_MODE) init_chrono();
 
   while (wb_robot_step(TIME_STEP) != -1) {
 
@@ -708,9 +723,9 @@ int main(int argc, char **argv) {
 
       command_decen(time_step_counter);
 
-      if (MANUAL_MODE) check_keyboard();
+      if (MANUAL_MODE or CHRONO_MODE) check_keyboard();
       // cout << "DONE GET COMMAND\n";
-
+      if (CHRONO_MODE) chrono_control();
       
       transmit_coach();
       show_command(player_state, player_ball, player_param_main, player_param_sub);

@@ -205,6 +205,7 @@ void normalize_2D(){ // input positive
   double denomi = 0;
   for (int i = 0; i < NUM_COMPO_VEC; i++)
     denomi = denomi + activate_function(length_vector(component_vector[i].vx, component_vector[i].vy));
+  if (fabs(denomi) < 0.001) return;
   for (int i = 0; i < NUM_COMPO_VEC; i++){
 
     double old_len = length_vector(component_vector[i].vx, component_vector[i].vy);
@@ -213,6 +214,8 @@ void normalize_2D(){ // input positive
     // cout << "FUNCTION G at" << i << " " << old_len << " " << new_len << " orig x y " << component_vector[i].vx << " " << component_vector[i].vy << " with max " << Vmax << '\n';
     component_vector[i].vx *= new_len/old_len;
     component_vector[i].vy *= new_len/old_len;
+
+      // cout << component_vector[i].vx  << ' ' << component_vector[i].vy << ' ' << i << " compo vec \n";
   }
 }
 
@@ -221,9 +224,13 @@ void normalize_W() // input mix
   double denomi = 0;
   for (int i = 0; i < NUM_COMPO_VEC; i++)
     denomi = denomi + activate_function( component_vector[i].vw);
+  if (fabs(denomi) < 0.001) return;
   auto sgn = [] (float x) { return (x > 0) ? 1 : ((x < 0) ? -1 : 0); };
-  for (int i = 0; i < NUM_COMPO_VEC; i++)
+  for (int i = 0; i < NUM_COMPO_VEC; i++){
+    if (fabs(component_vector[i].vw) < 0.001) continue;
     component_vector[i].vw = sgn(component_vector[i].vw)*Wmax*activate_function(component_vector[i].vw)/denomi;
+            // cout << component_vector[i].vw  << ' ' << i << " compo vec \n";
+  }
 }
 
 void finalize_speed(){
@@ -253,6 +260,7 @@ void finalize_speed(){
       targetSpeed[1]  += component_vector[i].vy;
       targetSpeed[2]  += component_vector[i].vw;
     }
+    cout << "GOUKEI " << targetSpeed[0] << ' ' << targetSpeed[1] << ' ' << targetSpeed[2] << '\n';
 
   }
   else if (NAVI_MAX_METHOD){

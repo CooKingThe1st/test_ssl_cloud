@@ -134,53 +134,27 @@ double param_sub[ROBOTS] = {-1000,-1000,-1000,-1000, -1000,-1000,-1000,-1000, -1
 
 // -----------TINO3------
 
-static void run_demo() {
-  printf("Demonstration started\n");
+// static void run_demo() {
+//   printf("Demonstration started\n");
 
-  // Make a square movement
-  base_forwards();
-  passive_wait(2.0);
-  base_reset();
-  passive_wait(1.0);
+//   // Make a square movement
+//   base_forwards();
+//   passive_wait(2.0);
+//   base_reset();
+//   passive_wait(1.0);
 
-  base_strafe_left();
-  passive_wait(2.0);
-  base_reset();
-  passive_wait(1.0);
+//   base_strafe_left();
+//   passive_wait(2.0);
+//   base_reset();
+//   passive_wait(1.0);
 
-  base_backwards();
-  passive_wait(2.0);
-  base_reset();
-  passive_wait(1.0);
+//   base_backwards();
+//   passive_wait(2.0);
+//   base_reset();
+//   passive_wait(1.0);
 
-  base_strafe_right();
-  passive_wait(2.0);
-  base_reset();
-  passive_wait(1.0);
-
-  base_forwards();
-  passive_wait(2.0);
-  base_reset();
-  passive_wait(1.0);
-
-  base_strafe_left();
-  passive_wait(2.0);
-  base_reset();
-  passive_wait(1.0);
-
-  base_backwards();
-  passive_wait(2.0);
-  base_reset();
-  passive_wait(1.0);
-
-  base_turn_left();
-  passive_wait(3.0);
-  base_reset();
-  base_turn_right();
-  passive_wait(3.0);
-  base_reset();
-  printf("Demonstration finished\n");
-}
+//   printf("Demonstration finished\n");
+// }
 
 // static void display_instructions() {
 //   printf("Control commands:\n");

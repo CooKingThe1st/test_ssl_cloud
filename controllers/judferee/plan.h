@@ -19,6 +19,8 @@
 
 #endif
 
+#include "file_manipulate.h"
+
 #define ROBOTS (7*2)  // number of robots
 #define HALF_LENGTH_LEG 0.265
 #define TACKLE_DEBUG_MODE 0
@@ -56,20 +58,6 @@ struct Command_Pack {
 	double sub_param_0, sub_param_1;
 };
 
-void log_to_file(string record_file_name, string data)
-{
-	ofstream MyLog;
-    MyLog.open(record_file_name+".txt", ios::app);
-    MyLog << data;
-    MyLog.close();
-}
-
-void clear_file(string file_name){
-if (!PAPER_ATTAK_MODE) return;
-  std::ofstream ofs;
-  ofs.open(file_name+".txt", std::ofstream::out | std::ofstream::trunc);
-  ofs.close();
-}
 
 #define FRICTION 0.2
 #define _fric_ (32/(1000*FRICTION))

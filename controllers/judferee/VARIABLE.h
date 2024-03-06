@@ -1,12 +1,25 @@
 #ifndef VAR_H
 #define VAR_H
 
+#include <string.h>
+#include <cassert>  
+
 #include <webots/display.h>
 #include <webots/emitter.h>
 #include <webots/receiver.h>
 #include <webots/robot.h>
 #include <webots/supervisor.h>
 
+
+// SYSTEM ARG
+
+bool MANUAL_MODE = 1;
+bool CHRONO_MODE = 1;
+bool RANDOM_MODE = 0;
+
+// CHRONO CONTROL
+
+bool chrono_control_key[2] = {false, false}; // = pressed key [F, G]
 
 // SYSTEM VAR
 #define ROBOTS (7*2)  // number of robots
@@ -63,7 +76,6 @@ double player_param_sub[ROBOTS] = {-1000,-1000,-1000,-1000, -1000,-1000,-1000,-1
 
 double old_player_param_main[ROBOTS];
 double old_player_param_sub[ROBOTS];
-
 int old_player_state[ROBOTS];
 
 int manual_player = -1;
