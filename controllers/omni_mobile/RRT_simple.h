@@ -330,7 +330,7 @@ Path path_plan(const Dot q_s,const  Dot q_f,const Env Cir,const  Dot bound_x,con
 
     if (list_circle_collision_check(Cir, q_s)){
 // special case, maybe bottle-neck
-
+            cout << " special handle \n";
         Path stupid_path;
         stupid_path.push_back(q_s);
 
