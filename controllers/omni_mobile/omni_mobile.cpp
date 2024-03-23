@@ -256,7 +256,6 @@ void init_sensor_actuator()
   }
   link_wheel(wheels[0], wheels[1], wheels[2], wheels[3]);
 
-
   springer = wb_robot_get_device("springer");
   wb_motor_set_velocity(springer, 15);
 
@@ -288,7 +287,6 @@ void init_sensor_actuator()
 
   gps = wb_robot_get_device("gps");
   wb_gps_enable(gps, TIME_STEP);
-
 
   // Get and enable the infrared sensors
   for (int i = 0; i < NUMBER_OF_INFRARED_SENSORS; ++i) {
@@ -676,11 +674,11 @@ int main(int argc, char **argv) {
   single_step();
 
   while (wb_robot_step(TIME_STEP) != -1) {
-    cout << " BEGIN GAME " << robot_encrypted_id << '\n';
+    // cout << " BEGIN GAME " << robot_encrypted_id << '\n';
     ++time_step_counter;
-    //   cout << "STATE " << current_state << " TIME " << time_step_counter << " BALL " << ball_possesion << '\n';
+      // cout << "STATE " << current_state << " TIME " << time_step_counter << " BALL " << ball_possesion << '\n';
     // if (ball_velo*3 < 3.78) cout << "distance " << ball_position[0] << '\n'; else 
-    //   cout << "OK BALL VELO " << ball_velo << '\n';
+      // cout << "OK BALL VELO " << ball_velo << '\n';
     // if (gps_value[1] > ROBOT_MIN_Y && !PEAK_YET) cout << "Peak " << ROBOT_MIN_Y << " at T_PEAK " << "\n", PEAK_YET = 1;
     // // else ROBOT_MIN_Y = gps_value[1];
     // if (fabs(gps_value[0] - ball_position[0])/fabs(ball_position[0]) <= 0.6 && PEAK_YET)  cout << " STABLE " << '\n',STABLE_YET = 1;
@@ -695,7 +693,7 @@ int main(int argc, char **argv) {
 
     // check_keyboard();
     // component_vector[2].assign_xy( transform_vector(POD(sensor_values, &STUCKED_TIME), current_robot_dir) );
-    cout << "     BEGIN CYCLE " << robot_encrypted_id << '\n';
+    // cout << "     BEGIN CYCLE " << robot_encrypted_id << '\n';
     behavior_control();
 
     congest_rule();
@@ -711,7 +709,7 @@ int main(int argc, char **argv) {
     cout << "               ROBOT " << robot_encrypted_id << " has velo \n";
     finalize_speed();
     base_accelerate();
-    cout << "       DONE CYCLE " << robot_encrypted_id << '\n';
+    // cout << "       DONE CYCLE " << robot_encrypted_id << '\n';
     // single_step();
   }
 

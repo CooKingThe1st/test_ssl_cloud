@@ -5,10 +5,6 @@ using namespace std;
 #include <VARIABLE.h>
 #include <file_manipulate.h>
 
-#define UI_ON 1
-#define LAYOUT_STAT 0
-#define LAYOUT_BVIOR 1
-
 #include <stdio.h>
 #include <iomanip>
 
@@ -196,6 +192,10 @@ void set_visibility(){
         wb_supervisor_node_set_visibility(wb_supervisor_node_get_from_def(SELF_INDI.c_str()) , vpoint, 0);
       }
 
+
+    for (int i = 0; i < 3; i++)
+      pole_visibility[i] = 0,
+      wb_supervisor_node_set_visibility(pole_ref[i], vpoint, 0);
 }
 
 

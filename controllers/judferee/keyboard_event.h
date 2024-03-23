@@ -23,7 +23,7 @@ static void init_keyboard(){
   if (FOLLOW_ROBOT) wb_supervisor_field_set_sf_string(wb_supervisor_node_get_field(vpoint, "follow"), robot_webot_name[manual_player]);
   else if (FOLLOW_CENTER) wb_supervisor_field_set_sf_string(wb_supervisor_node_get_field(vpoint, "follow"), "CAMERA_CENTER");
 
-  CAMERA_CENTER_NODE = wb_supervisor_node_get_from_def("CAMERA_CENTER");
+  CAMERA_CENTER_NODE = wb_supervisor_node_get_from_def("ADD_ON.CAMERA_CENTER");
 
   string SELF_INDI = string(robot_name[manual_player]) + ".INDICATOR";
   wb_supervisor_node_set_visibility(wb_supervisor_node_get_from_def(SELF_INDI.c_str()) , vpoint, 1);

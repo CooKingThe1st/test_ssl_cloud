@@ -140,6 +140,9 @@ double F_angle(double a)
 // {return (a)*K_angle;}  
 // { return (a);} 
 
+double old_vx = 0, old_vy = 0;
+double v_smoothnees = 1;
+
 void base_apply_speeds(double vx, double vy, double omega) {
   // vx = vx * K_velo * loss_angle_velo( omega ) / WHEEL_RADIUS;
   // vy = vy * K_velo * loss_angle_velo( omega ) / WHEEL_RADIUS;
@@ -150,7 +153,12 @@ void base_apply_speeds(double vx, double vy, double omega) {
   omega = F_angle(omega) * DISTANCE_WHEEL_TO_ROBOT_CENTRE / WHEEL_RADIUS;
   // omega = omega * DISTANCE_WHEEL_TO_ROBOT_CENTRE * K_angle/ WHEEL_RADIUS;
 
-  // cout << "               APPLIED VELO " << vx << ' ' << vy << ' ' << omega << '\n';
+  cout << "               APPLIED VELO " << vx << ' ' << vy << ' ' << omega << '\n';
+
+  if (fabs(vx - old_vx) > fabs(0.3*old_vx)) vx =  old_vx + (vx - old_vx) * v_smoothnees;
+  old_vx = vx;
+  if (fabs(vy - old_vy) > fabs(0.3*old_vy)) vy =  old_vy + (vy - old_vy) * v_smoothnees;
+  old_vy = vy;
 
   check_speed(vx, Vmax); check_speed(vy, Vmax); check_speed(omega, Wmax);
 

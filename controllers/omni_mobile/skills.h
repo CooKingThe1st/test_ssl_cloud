@@ -180,10 +180,11 @@ Omni_Vector react_move_to_position(double  current_x, double current_y, double t
 
   // *return_magnitude = 0;
 
-  if (temp_len < 1.75 && temp_len > 0.001){
+  if (temp_len < 3.9 && temp_len > -0.001){
   	double temp_dir = atan2(t_pos_vector[1], t_pos_vector[0]);
-  	double X = 1.7*(1.2-exp(-3*temp_len));
-  		// cout << "                    ATAN2 " << temp_dir << "    LEN " << X << '\n';
+  	double X = 3.3*(1.2-exp(-20*temp_len));
+    // X = 6;
+  		cout << "                    ATAN2 " << temp_len << "    LEN " << X << '\n';
 
 
   	t_pos_vector[0] = X * cos(temp_dir);
@@ -476,7 +477,7 @@ void get_ball(){
 #define V_MAX_ROB 1.2
 
 
-void chase_ball_verSafe(double IP_x, double IP_y){
+void chase_ball(double IP_x, double IP_y){
 	if (wb_connector_get_presence(magnetic_sensor) == 0){
 			double t_ball2IP = length_dist_vector(ball_position[0], ball_position[1],  IP_x, IP_y) / ball_velo;
 			double t_rob2IP  = length_dist_vector(gps_value[0], gps_value[1],  IP_x, IP_y) / V_MAX_ROB;
@@ -512,7 +513,7 @@ void chase_ball_verSafe(double IP_x, double IP_y){
 }
 
 
-void chase_ball(double IP_x, double IP_y){
+void chase_ball_verWeak(double IP_x, double IP_y){
 	// if (ball_velo > 0.8) 
 	// 	component_vector[0] = plan_rrt(Dot(IP_x, IP_y), default_bx, default_by),
 	// 	component_vector[0].ippai(10);
@@ -571,20 +572,95 @@ void chase_ball(double IP_x, double IP_y){
 					// if (current_dist_2ball > 2) component_vector[2].ippai(1.3);
 				// }
 					// cout <<"                 MIP " <<  component_vector[2].vx << " " << component_vector[2].vy << " here the problem " << IP_x << ' ' << IP_y << "\n";
-
-
 				// component_vector[2].ippai(exp(current_dist_2ball*current_dist_2ball/6)-1);
-
 			}
-
-
-
-
 	}
 	else {
 		if (++ball_release_counter > 0) wb_connector_lock(magnetic_sensor);
 	}
 }
+
+
+
+void chase_ball_verCurrentlyFix(double IP_x, double IP_y){
+  // if (ball_velo > 0.8) 
+  //  component_vector[0] = plan_rrt(Dot(IP_x, IP_y), default_bx, default_by),
+  //  component_vector[0].ippai(10);
+  // else 
+  if (wb_connector_get_presence(magnetic_sensor) == 0){
+
+    // if (ball_velo < 1.8){
+      double t_ball2IP = length_dist_vector(ball_position[0], ball_position[1],  IP_x, IP_y) / ball_velo;
+      double t_rob2IP  = length_dist_vector(gps_value[0], gps_value[1],  IP_x, IP_y) / V_MAX_ROB;
+      double current_dist_2ball = length_dist_vector(ball_position[0], ball_position[1],  gps_value[0], gps_value[1]);
+      // double current_dist_2IP = length_dist_vector(IP_x, IP_y,  gps_value[0], gps_value[1]);
+      double delta_ball_dir = length_vector(ball_moving_direction[0], ball_moving_direction[1]); 
+
+      bool SWICH_ = 0;
+      // cout << "CHASE_BALL t__ball " << t_ball2IP << "  t___rob " << t_rob2IP << " ball-velo " << ball_velo << '\n';
+      if (SWICH_ && (ball_velo < 1.5  or  length_dist_vector(gps_value[0], gps_value[1],  IP_x, IP_y) < 1) ){
+
+          cout << "           switch bad \n";
+        // component_vector[0] = react_move_to_position(gps_value[0] + 0.21 * cos(current_robot_dir), gps_value[1] + 0.21 * sin(current_robot_dir), \
+        //               bound_x(IP_x, default_bx.first, default_bx.second), bound_y(IP_y, default_by.first, default_by.second), ball_position[0], ball_position[1]);
+        // component_vector[0].ippai(5);
+        move_to_ball();
+
+      }
+      else {
+// SAFE CHOICE (3; 2|   1.5 | 1)
+
+
+        // move_to_ball(default_bx, default_by, exp(-current_dist_2ball*current_dist_2ball/2)*2);
+
+        // cout <<"                 MBALL " <<  component_vector[0].vx << " " << component_vector[0].vy << " here out of bound \n";
+
+        // if (current_dist_2ball > 2)
+          // move_to_ball(default_bx, default_by, exp(-current_dist_2ball/3)*2 * exp(-0.2*delta_ball_dir*delta_ball_dir)  );
+
+          // if (length_dist_vector(gps_value[0], gps_value[1],  IP_x, IP_y) > 1)
+          //   component_vector[0].ippai(3);
+
+        // else
+        //  move_to_ball(default_bx, default_by, exp(-current_dist_2ball*current_dist_2ball*current_dist_2ball*current_dist_2ball*0.04)*2);
+
+// e^{-0.08\cdot x^{4}}\cdot2
+
+        // double delta_ball_dir = length_vector(ball_moving_direction[0], ball_moving_direction[1]); 
+        // if (ball_velo > 0.02)
+        //  component_vector[1] = Omni_Vector{ball_moving_direction[0] * ball_velo / delta_ball_dir, ball_moving_direction[1] * ball_velo / delta_ball_dir, 0},
+        //  component_vector[1].ippai( exp(ball_velo/6)-1 );
+    
+
+          // if ( delta_ball_dir > 0.5 && fabs( fabs(IP_x) - HIGH_BOUND_X) > 1 && fabs( fabs(IP_y) - HIGH_BOUND_Y) > 1 ){
+          // if ( delta_ball_dir > 0.02 && fabs( fabs(IP_x) - HIGH_BOUND_X) > 1 && fabs( fabs(IP_y) - HIGH_BOUND_Y) > 1 ){
+          if (delta_ball_dir > 0.0001 && fabs( fabs(IP_x) - HIGH_BOUND_X) > 1 && fabs( fabs(IP_y) - HIGH_BOUND_Y) > 1 ){
+            component_vector[1] = Omni_Vector{ball_moving_direction[0] * ball_velo / delta_ball_dir, ball_moving_direction[1] * ball_velo / delta_ball_dir, 0};
+            component_vector[1].ippai(MAX(0, 2-exp(0.1/sqrt(delta_ball_dir))));
+          //  // component_vector[1].ippai(MAX(1, exp(ball_velo/6)/2 ));
+          }
+
+
+        // if (current_dist_2ball > 0.25){
+          component_vector[2] = react_move_to_position(gps_value[0] + 0.21 * cos(current_robot_dir), gps_value[1] + 0.21 * sin(current_robot_dir), \
+                      IP_x, IP_y, ball_position[0], ball_position[1]);
+          // component_vector[2].ippai(MAX(0, 0.96-0.38/current_dist_2ball));
+          // if (current_dist_2ball > 2) component_vector[2].ippai(1.3);
+        // }
+          // cout <<"                 MIP " <<  component_vector[2].vx << " " << component_vector[2].vy << " here the problem " << IP_x << ' ' << IP_y << "\n";
+        // component_vector[2].ippai(exp(current_dist_2ball*current_dist_2ball/6)-1);
+      }
+  }
+  else {
+    if (++ball_release_counter > 0) wb_connector_lock(magnetic_sensor);
+  }
+}
+
+
+
+
+
+
 
 void cut_ball(double IP_x, double IP_y){
 	// if (ball_velo > 0.8) 

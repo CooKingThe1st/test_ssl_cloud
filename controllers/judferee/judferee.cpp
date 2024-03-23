@@ -74,6 +74,10 @@ void init_robot()
 
   vpoint = wb_supervisor_node_get_from_def("VPOINT");
 
+  pole_ref[0] = wb_supervisor_node_get_from_def("ADD_ON.POLE_1");
+  pole_ref[1] = wb_supervisor_node_get_from_def("ADD_ON.POLE_2");
+  pole_ref[2] = wb_supervisor_node_get_from_def("ADD_ON.POLE_3");
+
 }
 
 void init_sensor_actuator()

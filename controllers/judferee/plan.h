@@ -494,8 +494,10 @@ struct TackleTree{
 				temp_pesky_1st = ListNode[first_gen_node].time_limit,
 				pesky_1st_choice = first_gen_node;
 
-			// if (DEBUG_FREE_BALL) cout << "temp_risk " << temp_risk << " Node_T " << ListNode[first_gen_node].time_limit << " Node_ID " << ListNode[first_gen_node].carrier << '\n';
+			if (DEBUG_FREE_BALL) cout << "		temp_risk " << temp_pesky_1st << " Node_T " << ListNode[first_gen_node].time_limit << " Node_ID " << ListNode[first_gen_node].carrier << " SPEED " << ListNode[first_gen_node].speed << '\n';
 		}
+		if (DEBUG_FREE_BALL) cout << "    CHECK SINK " << ListNode[0].Sink.first << ' ' << ListNode[0].Sink.second  << '\n';
+		if (DEBUG_FREE_BALL) cout << "    BALL_VELO " << ball_velo << '\n';
 		assert(pesky_1st_choice != -1);
 		// cout << "PESKY 1st " << pesky_1st_choice << '\n';
 		return make_pair(ListNode[pesky_1st_choice].carrier, ListNode[pesky_1st_choice].Sink);
@@ -1429,6 +1431,12 @@ Command_Pack switch_to_attack(unsigned int time_step_now,  bool *missing, double
 // 	}
 // }
 
+void update_pole_target(int index, Point target_pole){
+	pole_visibility[index] = 1;
+	wb_supervisor_node_set_visibility(pole_ref[index], vpoint, 1);
+	double new_center[3] = {target_pole.first, target_pole.second, 0.15};
+	wb_supervisor_field_set_sf_vec3f(wb_supervisor_node_get_field(pole_ref[index], "translation"), new_center);
+}
 
 //  TRY 2nd guess
 Command_Pack guess_ball_strategy( bool *missing, double player_pos[][3], int *player_ball,  double *ball_pos, int this_id, Point ball_moving_direction, double ball_velo){
@@ -1465,7 +1473,7 @@ Command_Pack guess_ball_strategy( bool *missing, double player_pos[][3], int *pl
 	}
 	else{
 
-			if (DEBUG_FREE_BALL) cout << "       CHECK------------- this_id " << this_id << " and " << best_teamate << " IP " << best_IPOINT.first << ' ' << best_IPOINT.second << " ball_velo " << ball_velo << '\n';
+			// if (DEBUG_FREE_BALL) cout << "       CHECK------------- this_id " << this_id << " and " << best_teamate << " IP " << best_IPOINT.first << ' ' << best_IPOINT.second << " ball_velo " << ball_velo << '\n';
 
 			// cout << "        uhm, thisisweird: current risk " << tactic_tree.get_point_risk() << " current_numrisk " << tactic_tree.get_num_risk() << '\n'; 
 
@@ -1479,10 +1487,12 @@ Command_Pack guess_ball_strategy( bool *missing, double player_pos[][3], int *pl
 		// if (this_id == 11){ 
 		// 	cout << "GET BALL best teamate " << best_teamate << " best risk " << this_risk << '\n';	
 		// }
+
+
 		if (this_risk > THRESHOLD_RISK) MUDA_FLAG = 2;
 	}
 
-	if (DEBUG_FREE_BALL) cout << " GUESS BALL RETURN MUDA " << MUDA_FLAG << "\n\n\n";
+	// if (DEBUG_FREE_BALL) cout << " GUESS BALL RETURN MUDA " << MUDA_FLAG << "\n\n\n";
 
 	if (goal_line(predicted_ball, this_id, 0.5)) MUDA_FLAG = 3;
 
@@ -1490,9 +1500,18 @@ Command_Pack guess_ball_strategy( bool *missing, double player_pos[][3], int *pl
 // FUCK HERE, as the goal keeper did not fall into the switch_def but here
 			// cout << "UPDATE\n ";
 			string guess_I = (this_id < 7 ? "1 " : "0 ") + std::to_string(best_IPOINT.first) + " " + std::to_string(best_IPOINT.second) + " PRE " + std::to_string(predicted_ball.first) + " " + std::to_string(predicted_ball.second) + "\n";
-			if (PAPER_ATTAK_MODE) log_to_file("temp_p", guess_I);
+			// if (PAPER_ATTAK_MODE) log_to_file("temp_p", guess_I);
+			if (GUESS_BALL_UI) {
+
+				update_pole_target(0, best_IPOINT);
+				update_pole_target(2, predicted_ball);
+
+			}
 
 		// cout << "			 GUESS BALL BEHAVIOR " << guess_best_candidate.first  << " FROM_VIEW  " << this_id << " MUDA_FLAG " << MUDA_FLAG << '\n';
+
+
+
 
 	if (MUDA_FLAG != 0)
 	{

@@ -14,8 +14,16 @@
 // SYSTEM ARG
 
 bool MANUAL_MODE = 1;
-bool CHRONO_MODE = 1;
+bool CHRONO_MODE = 0;
 bool RANDOM_MODE = 0;
+
+// UI ARG
+
+
+#define UI_ON 1
+#define LAYOUT_STAT 0
+#define LAYOUT_BVIOR 1
+bool GUESS_BALL_UI = 1;
 
 // CHRONO CONTROL
 
@@ -81,6 +89,12 @@ int old_player_state[ROBOTS];
 int manual_player = -1;
 
 // SETUP_UI VAR
+
+
+// POLE VAR
+
+bool pole_visibility[3] = {0, 0, 0};
+WbNodeRef pole_ref[3];
 
 
 #endif
