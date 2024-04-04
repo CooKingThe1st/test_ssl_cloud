@@ -21,7 +21,7 @@ using namespace std;
 // include cross-over and mutation operators
 // include fitness function
 
-double MAX_BOUND_FITNESS = 100000;
+double MAX_BOUND_FITNESS = 10000000000000;
 
 struct Genome{
 	std::vector<double > adn;
@@ -63,6 +63,7 @@ struct Genome{
 	    return os;
 	}
 
+	// each adn from genome A has a chance of swapping with that in genome B
 	pair<Genome, Genome> cross_swap(const Genome& another) {
 		Genome mutated_1(adn);
 		Genome mutated_2(another.adn);
@@ -75,16 +76,18 @@ struct Genome{
 	}
 
 
-	pair<Genome, Genome> cross_fuse(const Genome& another, double fuse_rate = 0.3){
+	// each adn from genome A get a fraction of that in genome B, (5%->30%), multi_rate = 1->2
+	pair<Genome, Genome> cross_fuse(const Genome& another){
 		Genome mutated_1(adn);
 		Genome mutated_2(another.adn);
-
-	    double f = (double)rand() / RAND_MAX;
-	    fuse_rate = 0.05 + f * (0.3 - 0.05);
 
 		for (std::vector<int>::size_type jid = 0; jid < adn.size(); jid++){
 			// int coin_flip = rand() % 2;
 			// if (coin_flip == 0) continue;
+		    double fuse_rate = (double)rand() / RAND_MAX;
+		    fuse_rate = 0.05 + fuse_rate * (0.3 - 0.05);
+		    fuse_rate *=  ( (rand() % 2 ) + 1);
+
 			double x = mutated_1.adn[jid], y = mutated_2.adn[jid];
 			mutated_1.adn[jid] += fuse_rate *(y-x);
 			mutated_2.adn[jid] += fuse_rate *(x-y);
@@ -92,12 +95,12 @@ struct Genome{
 		return make_pair(mutated_1, mutated_2);
 	}
 
+	// each adn get or lose a fraction of itself (2% -> 30%, multi_rate = -3..3)
 	Genome mutate_add(){
 		Genome mutated(adn);
-		for (std::vector<int>::size_type jid = 0; jid < adn.size(); jid++){
-			int mode = rand() % 10;
-			mode -= 5;
 
+		for (std::vector<int>::size_type jid = 0; jid < adn.size(); jid++){
+			int mode =  ( (rand() % 7 ) -3);
 		    double substance = (double)rand() / RAND_MAX;
 		    substance = 0.02 + substance * (0.3 - 0.02);
 
@@ -106,7 +109,8 @@ struct Genome{
 		return mutated;
 	}
 
-	Genome mutate_fuse(double fuse_rate = 0.3){
+	// each adn from genome A get a fraction of another A's adn, (5%->30%), multi_rate = 1->2
+	Genome mutate_fuse(){
 		Genome mutated(adn);
 
 		int num_repeated = rand() % (adn.size()) + 2;
@@ -116,6 +120,10 @@ struct Genome{
 			// if (coin_flip == 0) continue;
 			int id_1 = random_indice();
 			int id_2 = random_indice();
+
+		    double fuse_rate = (double)rand() / RAND_MAX;
+		    fuse_rate = 0.05 + fuse_rate * (0.3 - 0.05);
+		    fuse_rate *=  ( (rand() % 2 ) + 1);
 
 			double y = mutated.adn[id_2], x = mutated.adn[id_1];
 			mutated.adn[id_2] += fuse_rate *(x-y);
@@ -130,23 +138,19 @@ double fitness_function(Genome gene);
 struct Village{
 	int popu_size;
 	int num_generation = 0;
+	double current_diversity = 10000000;
 
 	vector<pair< double, Genome >> cell;
-	std::vector<double> l_b, u_b;
 
 	Village(){
 		popu_size = 0;
 		num_generation = 0;
 		cell.clear();
-		l_b.clear();
-		u_b.clear();
 	}
 
 	Village(int given_size, vector<double> lower_bound, vector<double> upper_bound){
 		cell.clear();
 		popu_size = given_size;
-		l_b = lower_bound;
-		u_b = upper_bound;
 		num_generation = 0;
 
 		for (int i = 0; i < popu_size; i++){
@@ -157,10 +161,18 @@ struct Village{
 		fitness_sort();
 	}
 
+	Village(vector<pair< double, Genome >> genomes){
+		popu_size = genomes.size();
+		num_generation = 0;
+		cell = genomes;
+		fitness_get();
+		fitness_sort();
+	}
 
+	int set_popu(int new_size){ popu_size = new_size; }
 
 	void fitness_get(){
-		for (int i = 0; i < popu_size; i++)
+		for (std::vector<int>::size_type i = 0; i < cell.size(); i++)
 			if (cell[i].first - 1 < -MAX_BOUND_FITNESS)
 				cell[i].first = fitness_function(cell[i].second);
 	}
@@ -169,20 +181,30 @@ struct Village{
 		sort(cell.begin(), cell.end(), [](pair<double, Genome> l_g, pair<double, Genome> r_g) {
     		return l_g.first > r_g.first;
 		});
+		while (cell.size() > popu_size) cell.pop_back();
+	}
+
+	void auto_fill(){
+		while (cell.size() < popu_size){
+			Genome mutated = cell[ rand() % cell.size() ].second.mutate_add();
+			cell.push_back(make_pair(-MAX_BOUND_FITNESS, mutated) );
+		}
+		fitness_get();
 	}
 
 	void genome_gen(){
+		if (cell.size() < popu_size) auto_fill();
+
 		vector<pair< double, Genome > > next_gen;
 
 		vector<pair< double, Genome > > temp;
 
 		fitness_sort();
-		while (cell.size() > popu_size) cell.pop_back();
 
 		// selection 
 
 		int Xover_popu = int(popu_size * GA_Xover_rate);
-		int tourbin_size = int(GA_tourbin_size_rate * popu_size);
+		int tourbin_size = int(GA_tourbin_size_rate * popu_size) + 1;
 
 		for (int i = 0; i < Xover_popu; i++){
 			// get the tourbin
@@ -197,6 +219,7 @@ struct Village{
 
 			temp.push_back(best);
 		}
+		std::random_shuffle(temp.begin(), temp.end());
 
 		// perform the Xover
 		while (temp.size() > 1){
@@ -226,7 +249,13 @@ struct Village{
 			bool is_mutated = ((double) rand() / (RAND_MAX)) <= GA_mutate_rate;
 			if (is_mutated == false) continue;
 
+			int choice = rand() % 2;
 			Genome mutated = next_gen[i].second.mutate_add();
+			if (choice == 0) { 
+				for (std::vector<int>::size_type jid = 0; jid < mutated.adn.size(); jid++)
+					mutated.adn[jid] = next_gen [  rand() % popu_size ].second.adn[jid];
+			}
+
 			next_gen[i] = make_pair(-MAX_BOUND_FITNESS, mutated);
 		}
 
@@ -247,7 +276,8 @@ struct Village{
 		for (int i = 0; i < popu_size; i++)
 			for (int j = i + 1; j < popu_size; j++)
 				diversity_point += ( cell[i].second - cell[j].second );
-		return diversity_point / popu_size;
+		current_diversity = diversity_point / popu_size;
+		return current_diversity;
 	}
 
 	pair<double, Genome> fitness_best_pair(){ return cell[0]; }
@@ -283,10 +313,164 @@ struct Village{
 	}
 };
 
+struct Town{
+	int numberVillage;
+	int initVillages;
+	int num_generation;
+	int total_pop;
+	double town_diversity;
+
+	vector<Village> village;
+
+
+	vector<double> ori_lower_bound;
+	vector<double> ori_upper_bound;
+
+
+	Town(int init_village, int POP, vector<double> lower_bound, vector<double> upper_bound){
+		village.clear();
+		total_pop = POP;
+		num_generation = 0;
+		numberVillage = init_village;
+		initVillages = init_village;
+
+		town_diversity = 1000000;
+		ori_lower_bound = lower_bound;
+		ori_upper_bound = upper_bound;
+
+		int init_village_POP = max(3, int(ceil(total_pop / numberVillage)));
+		if (init_village_POP * numberVillage < total_pop) init_village_POP ++;
+		for (int i = 0; i < numberVillage; i++){
+			village.push_back(  Village(init_village_POP, lower_bound, upper_bound)  );
+		}
+	}
+
+	// Town(ReplayPack ??){
+	// }
+
+	void end_of_an_era(){
+		numberVillage = initVillages;
+		num_generation = 0;
+		town_diversity = 1000000;
+
+		pair< double, Genome > the_last_survivor = village[0].cell[0];
+		village.clear();
+
+		int init_village_POP = max(3, int(ceil(total_pop / numberVillage)));
+		if (init_village_POP * numberVillage < total_pop) init_village_POP ++;
+		for (int i = 0; i < numberVillage; i++){
+			village.push_back(  Village(init_village_POP - 1, ori_lower_bound, ori_upper_bound)  );
+			village[i].cell.push_back(the_last_survivor);
+		}
+	}
+
+	void town_gen(){
+
+		num_generation += 1;
+
+		if (numberVillage > 1) {
+
+			numberVillage--;
+			int new_village_size = max(3, int(ceil(total_pop / numberVillage)));
+			if (new_village_size * numberVillage < total_pop) new_village_size++;
+			// int new_town_size = new_village_size * numberVillage;
+
+			// vector<pair< double, Genome >> flatten;
+
+			// cout << "current vil " << numberVillage << " new_village_size " << new_village_size << " new_town_size " << new_town_size << " popu_size " << total_pop << '\n';
+
+			for (std::vector<int>::size_type jid = 0; jid + 1 < village.size(); jid++){
+				// village[jid].genome_gen();
+				// flatten.insert(flatten.end(), village[jid].cell.begin(), village[jid].cell.end());
+					// cout << " current vil popu " << village[jid].cell.size() << '\n';
+				village[jid].set_popu(new_village_size);
+				while(village[jid].cell.size() > new_village_size){
+					village[jid+1].cell.push_back(village[jid].cell.back());
+					village[jid].cell.pop_back();
+				}
+				while (village[jid].cell.size() < new_village_size && village[jid+1].cell.size() > 0){
+					village[jid].cell.push_back(village[jid+1].cell.back());
+					village[jid+1].cell.pop_back();
+				}
+					// cout << " current vil popu " << village[jid].cell.size() << '\n';
+				village[jid].genome_gen();
+
+				// cout << " gen_town " << village[jid].cell.size() << ' ';
+			}
+
+			// while (flatten.size() < new_town_size )
+			// 	flatten.push_back( flatten[ rand() % flatten.size() ] );
+
+			village.pop_back();
+
+			// for (int i = 0; i < numberVillage; i++){
+			// 	vector<pair< double, Genome >> new_resident;
+			// 	new_resident.insert(new_resident.end(), flatten.begin() + i * new_village_size, flatten.begin() + (i+1) * new_village_size );
+
+			// 	village[i] = Village(new_resident);
+			// }
+		}
+		else{
+			village[0].genome_gen();
+		}
+	}
+
+	double town_diversity_get(){
+		town_diversity = -MAX_BOUND_FITNESS;
+		for (auto i : village)
+			town_diversity = max(town_diversity, i.diversity_get());
+		return town_diversity;
+	}
+
+
+	double town_fitness_best_gen(){ 
+		double best_fitness = -10000;
+		for (auto i : village)
+			best_fitness = max(best_fitness, i.fitness_best_gen());
+		return best_fitness;
+	}
+
+	double last_gen_diversity = -1; int diversity_counter = 0;
+	double last_gen_fitness = -1; int fitness_counter = 0;
+
+	bool terminate_ok(){
+		if (numberVillage > 1) return false;
+			// cout << num_generation << ' ' << GA_max_gen << '\n';
+		if (num_generation > GA_max_gen) return true;
+
+		double town_diversity = town_diversity_get();
+		// if  ( fabs(town_diversity - last_gen_diversity) * 50 < fabs(last_gen_diversity)) 
+		if  ( fabs(town_diversity - last_gen_diversity) < 1) 
+			diversity_counter+=1;
+		else diversity_counter = 0;
+		last_gen_diversity = town_diversity;
+			// cout << " THIS TOWN GEN DIVERST " << town_diversity << '\n';
+
+		double this_gen_fitness = town_fitness_best_gen();
+		// if  ( fabs(this_gen_fitness - last_gen_fitness) * 50 < fabs(last_gen_fitness)) 
+		if  ( fabs(this_gen_fitness - last_gen_fitness) < 1)
+			fitness_counter+=1;
+		else fitness_counter = 0;
+		last_gen_fitness = this_gen_fitness;
+
+			// cout << " THIS TOWN COUNTER " << (diversity_counter * 10 > GA_max_gen) << ' ' << (fitness_counter * 10 > GA_max_gen) << '\n';
+
+		if (diversity_counter * 10 > GA_max_gen) return true;
+		if (fitness_counter * 10 > GA_max_gen) return true;
+
+		return false;
+	}
+
+
+};
+
 Genome background_color;
+int eval_count = 0;
+double MAX_BOUND_VALUE = 1000000;
 
 double fitness_function(Genome gene){
-	return 255*3 - (gene - background_color);
+	eval_count += 1;
+	return MAX_BOUND_VALUE*3 - (gene - background_color);
 }
 
 
@@ -299,22 +483,29 @@ double fitness_function(Genome gene){
 // }
 
 
-void RGB_test(int num_gen_run){
+void RGB_test(int num_village, int num_gen_run, int num_era){
 	srand(time(0));
-	vector <double> color_ub{255, 255, 255};
+	vector <double> color_ub{MAX_BOUND_VALUE, MAX_BOUND_VALUE, MAX_BOUND_VALUE};
 	vector <double> color_lb{0, 0, 0};
 
-	// background_color = Genome(color_lb, color_ub);
-	background_color = Genome(std::vector<double>{125, 125, 125});
+	background_color = Genome(color_lb, color_ub);
+	// background_color = Genome(std::vector<double>{125, 125, 125});
 		std::cout << "BACK COLOR " << background_color << '\n';
-	Village oneshot(GA_popu_size, color_lb, color_ub);
+	Town oneshot(num_village, GA_popu_size, color_lb, color_ub);
 
-	for (int i = 0; i < num_gen_run; i++){
-		if (oneshot.terminate_ok()) break;
-		std::cout << "Gen " << oneshot.num_generation << " has best " << oneshot.fitness_best_gen() << " with " << oneshot.cell[0].second << '\n';
-		oneshot.genome_gen();
+	while (num_era > 0){
+		num_era--;
+		for (int i = 0; i < num_gen_run; i++){
+			if (oneshot.terminate_ok()) break;
+			// cout << " COUNTER " << oneshot.diversity_counter + oneshot.fitness_counter  << '\n';
+			// if (oneshot.diversity_counter + oneshot.fitness_counter > 0) std::cout << "Gen " << oneshot.num_generation << " has best " << oneshot.town_fitness_best_gen() << " with Div " << oneshot.town_diversity_get() << '\n';
+			oneshot.town_gen();
+		}
+		cout << " NEW ERA " <<  oneshot.num_generation << " has best " << oneshot.town_fitness_best_gen() << " with Div " << oneshot.town_diversity_get() << '\n';
+		cout << " PACK LEADER " << oneshot.village[0].cell[0].second << '\n';
+		oneshot.end_of_an_era();
 	}
-
+	cout << "EVAL COUNT " << eval_count << '\n';
 }
 
 #endif 
