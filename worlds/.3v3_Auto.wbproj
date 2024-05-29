@@ -5,6 +5,6 @@ sceneTreePerspectives: 000000ff00000001000000030000001e000000c0000000fa010000000
 maximizedDockId: -1
 centralWidgetVisible: 1
 orthographicViewHeight: 1
-textFiles: 1 "controllers/judferee/judferee.cpp" "controllers/omni_mobile/omni_mobile.cpp"
+textFiles: 1 "../test_ssl_cloud/controllers/judferee/judferee.cpp" "../test_ssl_cloud/controllers/omni_mobile/omni_mobile.cpp"
 consoles: Console:All:All
 renderingDevicePerspectives: python_api:display;0;1;0;0
